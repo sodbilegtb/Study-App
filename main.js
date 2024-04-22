@@ -1,0 +1,26 @@
+const express = require("express"),
+    layouts = require("express-ejs-layouts"),
+    app = express();
+
+const homeController = require("./controllers/homeController"),
+    deckController = require("./controllers/deckController"),
+    cardController = require("./controllers/cardController")
+
+app.set("port", process.env.port || 3000);
+app.set("view engine", "ejs");
+
+app.use(layouts);
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+
+app.get("/", homeController.showHome);
+app.get("/decks", deckController.listDecks);
+app.get("/decks/:id", deckController.showDeckDetails);
+app.get("/decks/:id/cards", deckController.listCards);
+app.get("/cards/:id", cardController.showCardDetails);
+
+app.listen(app.get("port"), () => {
+    console.log(`App started on port ${app.get("port")}.`);
+});
+
+
