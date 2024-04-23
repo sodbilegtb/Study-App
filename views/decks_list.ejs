@@ -1,0 +1,26 @@
+<body>
+<h1><%= title %></h1>
+<div id="container">
+    <% decks.forEach(deck => { %>
+        <div class="deck">
+            <p>
+                <strong>Name:</strong>
+                <span><%= deck.name %></span>
+            </p>
+            <p>
+                <strong>Description:</strong>
+                <span><%= deck.description %></span>
+            </p>
+            <p>
+                <strong>Cards:</strong>
+                <span><%= deck.cards.length || 0 %></span>
+            </p>
+            <p>
+                <strong>Last studied:</strong>
+                <span><%= deck.last_studied || '-' %></span>
+            </p>
+            <hr>
+        </div>
+    <% }) %>
+</div>
+</body>

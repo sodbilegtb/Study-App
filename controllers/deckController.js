@@ -1,14 +1,21 @@
 const decks = [
     {
         name: "Deck 1",
-        cards: [{}, {}]
+        description: "Description",
+        last_studied: null,
+        cards: [{
+        }, {}, {}]
     },
     {
         name: "Deck 2",
-        cards: [{}, {}]
+        description: "Description",
+        last_studied: null,
+        cards: []
     },
     {
         name: "Deck 3",
+        description: "Description",
+        last_studied: null,
         cards: [{}, {}]
     }
 ]
@@ -22,20 +29,26 @@ exports.listDecks = (req, res) => {
 }
 
 exports.showDeckDetails = (req, res) => {
-    let deckId = req.params.id;
-    console.log(deckId);
-    // TODO check that the index is ok
-    res.render("deck_details", {
-        title: "Deck Details",
-        deck: decks[deckId]
-    });
+    try {
+        let deck = decks[req.params.id];
+        res.render("deck_details", {
+            title: "Deck Details",
+            deck: decks[deckId]
+        });
+    } catch (e) {
+        res.redirect("/404");
+    }
 }
 
 exports.listCards = (req, res) => {
-    let deckId = req.params.id;
-    res.render("deck_cards", {
-        title: "Cards",
-        deck: decks[deckId],
-        cards: decks[deckId].cards
-    });
+    try {
+        let deck = decks[req.params.id];
+        res.render("deck_cards", {
+            title: "Cards",
+            deck: deck,
+            cards: deck.cards
+        });
+    } catch (e) {
+        res.redirect("/404");
+    }
 }
