@@ -49,7 +49,8 @@ exports.showDeckDetails = (req, res) => {
         let deck = decks[req.params.id-1];
         res.render("deck_details", {
             title: "Details",
-            deck: deck
+            deck: deck,
+            cards: deck.cards
         });
     } catch (e) {
         res.redirect("/404");
@@ -59,9 +60,8 @@ exports.showDeckDetails = (req, res) => {
 exports.listCards = (req, res) => {
     try {
         let deck = decks[req.params.id-1];
-        res.render("deck_cards", {
+        res.render("cards", {
             title: "Cards",
-            deck: deck,
             cards: deck.cards
         });
     } catch (e) {

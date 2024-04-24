@@ -20,6 +20,7 @@ app.get("/decks", deckController.listDecks);
 app.get("/decks/:id", deckController.showDeckDetails);
 app.get("/decks/:id/cards", deckController.listCards);
 app.get("/cards/:id", cardController.showCardDetails);
+app.get("/cards", cardController.listCards);
 
 app.get("/404", errorController.pageNotFoundError);
 
