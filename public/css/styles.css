@@ -1,5 +1,14 @@
-.link {
-    display: inline;
-    width: 200px;
-    text-decoration: none;
+.deck-grid {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+
+    width: 80%;
+    margin-left: 10%
+}
+
+.deck {
+    width: 400px;
+    height: 180px;
+    margin: 0 5px 10px 0
 }
