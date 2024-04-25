@@ -2,9 +2,9 @@
 <div class="text-center">
     <h2><%= title %></h2>
 </div>
-<div class="container" style="width: 60%; background-color:lightblue">
+<div class="container" style="width: 40%; background-color: lightgrey">
     <div class="row">
-        <div class="col-3">
+        <div class="col-4">
             Name:
         </div>
         <div class="col-4">
@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-3">
+        <div class="col-4">
             Description:
         </div>
         <div class="col-4">
@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-3">
+        <div class="col-4">
             Number of cards:
         </div>
         <div class="col-4">
@@ -28,31 +28,31 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-3">
+        <div class="col-4">
             Date created:
         </div>
         <div class="col-4">
-            TODO
+            <%= deck.date_created.toLocaleDateString('de-DE') %>
         </div>
     </div>
     <div class="row">
-        <div class="col-3">
+        <div class="col-4">
             Times studied:
         </div>
         <div class="col-4">
-            TODO
+            <%= deck.times_studied %>
         </div>
     </div>
     <div class="row">
-        <div class="col-3">
+        <div class="col-4">
             Last studied:
         </div>
         <div class="col-4">
-            TODO
+            <%= deck.last_studied ? deck.last_studied.toLocaleDateString('de-DE') : '-' %>
         </div>
     </div>
     <div class="row">
-        <div class="col-3">
+        <div class="col-4">
             <label for="notification">Study notifications:</label>
         </div>
         <div class="col-1">

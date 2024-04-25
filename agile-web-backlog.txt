@@ -1,0 +1,60 @@
+User Story 1:
+As a user, I can see a list of all the decks of note cards I have created.
+/decks
+
+User Story 2:
+As a user I can look at the details of a deck of note cards and see information
+about the date the deck was created, the number of times it was studied, the
+title and description, and a list of the cards in the deck.
+/deck/:id
+
+User Story:
+As a user, I can see a list of all my note cards.
+/cards
+
+User Story:
+As a user, I can look at the details of a notecard and edit it.
+/card/:id
+
+User Story:
+As a user, I can create a new deck of note cards.
+/decks/new
+
+User Story:
+As a user, I can delete a deck of note cards.
+
+User Story: 
+As a user, I can edit a deck of note cards to change its name, description, or
+the cards that are in it.
+/decks/:id/edit
+
+User Story:
+As a user, I can create a notecard with a name and a front and back side.
+/cards/new
+
+User Story:
+As a user, I can edit and delete notecards.
+/cards/:id/edit
+
+User Story:
+As a user, I can get the cards in a deck in JSON format.
+
+User Story:
+As a user, I can set notifications to remind me to study a deck.
+
+User Story:
+As a user, I can study a deck and mark a card as reviewed and whether I got it right or not.
+
+User Story:
+As a user, I can create an account and make changes to my account.
+
+User Story:
+As a user, I can login to my account to access my notecards and decks.
+
+User Story:
+As a user, I can filter my note cards by the deck they're in, tags that I've assigned to the cards and
+by the number of times a card has been studied.
+/cards
+
+User Story:
+As a user, I can search for a card by name.

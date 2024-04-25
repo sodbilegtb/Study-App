@@ -42,7 +42,7 @@
                         <strong>Last studied:</strong>
                     </div>
                     <div class="col">
-                        <%= deck.last_studied || '-' %>
+                        <%= deck.last_studied ? deck.last_studied.toLocaleDateString('de-DE') : '-' %>
                     </div>
                 </div>
                 <div class="row row-cols-4 justify-content-start" style="margin-top: 10px">
