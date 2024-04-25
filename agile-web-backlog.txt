@@ -8,12 +8,12 @@ about the date the deck was created, the number of times it was studied, the
 title and description, and a list of the cards in the deck.
 /deck/:id
 
-User Story:
+User Story 3:
 As a user, I can see a list of all my note cards.
 /cards
 
 User Story:
-As a user, I can look at the details of a notecard and edit it.
+As a user, I can look at the details of a note card and edit it.
 /card/:id
 
 User Story:

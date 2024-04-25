@@ -24,7 +24,7 @@ const decks = [
         description: "Description",
         last_studied: null,
         times_studied: 0,
-        cards: [{}, {}]
+        cards: [{name: "Card 1"}, {name: "Card 2"}]
     },
     {
         id: 4,
@@ -33,7 +33,7 @@ const decks = [
         description: "Unit 2 Vocabulary",
         last_studied: null,
         times_studied: 0,
-        cards: [{}, {}]
+        cards: [{name: "Card 1"}, {name: "Card 2"}]
     },
     {
         id: 5,
@@ -42,7 +42,19 @@ const decks = [
         description: "Description",
         last_studied: null,
         times_studied: 0,
-        cards: [{}, {}]
+        cards: [
+            {
+                name: "Card 1",
+                front_text: "Card 1",
+                back_text: "Back side of the card",
+                times_studied: 3,
+                times_correct: 2,
+                times_incorrect: 1
+            },
+            {name: "Card 2"},
+            {name: "Card 3"},
+            {name: "Card 4"},
+            {name: "Card 5"}]
     }
 ]
 
@@ -56,7 +68,7 @@ exports.listDecks = (req, res) => {
 
 exports.showDeckDetails = (req, res) => {
     try {
-        let deck = decks[req.params.id-1];
+        let deck = decks[req.params.id - 1];
         res.render("deck_details", {
             title: "Details",
             deck: deck,
@@ -69,7 +81,7 @@ exports.showDeckDetails = (req, res) => {
 
 exports.listCards = (req, res) => {
     try {
-        let deck = decks[req.params.id-1];
+        let deck = decks[req.params.id - 1];
         res.render("cards", {
             title: "Cards",
             cards: deck.cards

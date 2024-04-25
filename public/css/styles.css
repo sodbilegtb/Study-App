@@ -19,3 +19,12 @@
     margin-right: 20px;
     text-align: center;
 }
+
+.col {
+    text-align: left;
+}
+
+#front_text, #back_text {
+    resize: none;
+    border: none;
+}
