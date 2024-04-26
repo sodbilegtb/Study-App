@@ -1,0 +1,76 @@
+<body>
+<div class="container">
+    <% cards.forEach(card => { %>
+        <div class="row">
+            <div class="col card" style="margin: 4px; text-align: center">
+                <div class="row card-header">
+                    <h5>Details</h5>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Name:
+                    </div>
+                    <div class="col">
+                        <%= card.name %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Times studied:
+                    </div>
+                    <div class="col">
+                        <%= card.times_studied %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Times correct:
+                    </div>
+                    <div class="col">
+                        <%= card.times_correct %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Times incorrect:
+                    </div>
+                    <div class="col">
+                        <%= card.times_incorrect %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Tags:
+                    </div>
+                    <div class="col">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Decks:
+                    </div>
+                </div>
+            </div>
+            <div class="col card" style="margin: 4px; text-align: center">
+                <div class="row card-header">
+                    <h5>Front</h5>
+                </div>
+                <div class="row">
+                    <label for="front_text"></label>
+                    <textarea id="front_text" readonly disabled><%= card.front_text %></textarea>
+                </div>
+            </div>
+            <div class="col card" style="margin: 4px; text-align: center">
+                <div class="row card-header">
+                    <h5>Back</h5>
+                </div>
+                <div class="row">
+                    <label for="back_text"></label>
+                    <textarea id="back_text" readonly disabled><%= card.back_text %></textarea>
+                </div>
+            </div>
+        </div>
+    <% }) %>
+</div>
+</body>
