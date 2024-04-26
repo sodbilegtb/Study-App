@@ -64,6 +64,18 @@ exports.listDecks = (req, res) => {
         decks: decks,
     })
 }
+exports.showDeckDetails = (req, res) => {
+    try {
+        let deck = decks[req.params.id - 1];
+        res.render("deck_details", {
+            title: "Details",
+            deck: deck,
+            cards: deck.cards
+        });
+    } catch (e) {
+        res.redirect("/404");
+    }
+}
 
 exports.listCards = (req, res) => {
     try {
