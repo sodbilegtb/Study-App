@@ -16,6 +16,8 @@ app.use(express.static('public'))
 
 app.get("/", homeController.showHome);
 app.get("/decks", deckController.listDecks);
+app.get("/decks/:id", deckController.showDeckDetails);
+app.get("/decks/:id/cards", deckController.listCards);
 app.get("/404", errorController.pageNotFoundError);
 
 app.listen(app.get("port"), () => {
