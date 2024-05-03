@@ -4,6 +4,7 @@ const express = require("express"),
 
 const homeController = require("./controllers/homeController"),
     deckController = require("./controllers/deckController"),
+    cardController = require("./controllers/cardController"),
     errorController = require("./controllers/errorController");
 
 app.set("port", process.env.port || 3000);
@@ -18,6 +19,7 @@ app.get("/", homeController.showHome);
 app.get("/decks", deckController.listDecks);
 app.get("/decks/:id", deckController.showDeckDetails);
 app.get("/decks/:id/cards", deckController.listCards);
+app.get("/card/:id", cardController.showCardDetails);
 app.get("/404", errorController.pageNotFoundError);
 
 app.listen(app.get("port"), () => {
