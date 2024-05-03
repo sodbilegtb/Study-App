@@ -1,8 +1,8 @@
 <body>
 <div class="container">
     <% cards.forEach(card => { %>
-        <div class="row">
-            <div class="col card" style="margin: 4px; text-align: center">
+        <div class="row card-row">
+            <div class="col card">
                     <div class="row card-header">
                         <h5>Details</h5>
                     </div>
@@ -52,7 +52,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col card" style="margin: 4px; text-align: center">
+            <div class="col card">
                 <div class="row card-header">
                     <h5>Front</h5>
                 </div>
@@ -61,7 +61,7 @@
                     <textarea id="front_text" readonly disabled><%= card.front_text %></textarea>
                 </div>
             </div>
-            <div class="col card" style="margin: 4px; text-align: center">
+            <div class="col card">
                 <div class="row card-header">
                     <h5>Back</h5>
                 </div>

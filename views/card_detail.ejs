@@ -1,0 +1,57 @@
+<body>
+<h4 class="text-center">Card Details</h4>
+<div class="container" style="width:45%">
+    <div class="row">
+        <div class="col-3" style="min-width: 200px; margin: 5px; font-weight: bold">
+            <span>Name:</span><br>
+            <span>Times studied:</span><br>
+            <span>Times correct:</span><br>
+            <span>Times incorrect:</span><br>
+            <span>Tags:</span><br>
+            <span>Decks:</span>
+        </div>
+        <div class="col">
+            <span><%= card.name %></span><br>
+            <span><%= card.times_studied %></span><br>
+            <span><%= card.times_correct %></span><br>
+            <span><%= card.times_incorrect%></span><br>
+            <% for(let i = 0; i < card.tags.length; i++) { %>
+                <span><%= card.tags[i].name %><%= (i !== card.tags.length - 1) ? ',' : ''%></span>
+            <% } %><br>
+            <% for(let i = 0; i < decks.length; i++) { %>
+                <span><%= decks[i].name %><%= (i !== decks.length - 1) ? ',' : ''%></span>
+            <%}%>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col card" style="height: 250px;">
+            <div class="row card-header">
+                <h5>Front</h5>
+            </div>
+            <div class="row">
+                <label for="front_text"></label>
+                <textarea id="front_text" readonly disabled><%= card.front_text %></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col card" style="height: 250px">
+            <div class="row card-header">
+                <h5>Back</h5>
+            </div>
+            <div class="row">
+                <label for="back_text"></label>
+                <textarea id="back_text" readonly disabled><%= card.back_text %></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col col-2" style="width:150px;">
+            <a href="/" style="width:120px" class="btn btn-outline-warning">Edit</a>
+        </div>
+        <div class="col col-2" style="width:150px;">
+            <a href="/" style="width:120px" class="btn btn-outline-danger">Delete</a>
+        </div>
+    </div>
+</div>
+</body>
