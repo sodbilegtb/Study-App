@@ -19,6 +19,23 @@ const cards = [
 ]
 
 
+exports.showCardDetails = (req, res) => {
+    try {
+        const card = cards[req.params.id - 1];
+        const decks = [{
+            id: 1,
+            date_created: new Date(2024, 0, 1),
+            name: "Deck 1",
+            description: "Description",
+            last_studied: new Date(2024, 3, 22),
+            times_studied: 1,
+        }];
+        res.render("card_detail", {card: card, decks: decks});
+    } catch {
+        res.redirect("/cards");
+    }
+}
+
 
 exports.getCardUpdateForm = (req, res) => {
 
