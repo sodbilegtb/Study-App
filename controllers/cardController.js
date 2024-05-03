@@ -18,6 +18,7 @@ const cards = [
     {id:8, name: "Card 8"},
 ]
 
+
 exports.showCardDetails = (req, res) => {
     try {
         const card = cards[req.params.id - 1];
@@ -33,4 +34,25 @@ exports.showCardDetails = (req, res) => {
     } catch {
         res.redirect("/cards");
     }
+}
+
+
+exports.getCardUpdateForm = (req, res) => {
+
+}
+
+exports.postCardUpdateForm = (req, res) => {
+
+}
+
+exports.getCardCreateForm = (req, res) => {
+    res.render("card_form");
+}
+
+exports.postCardCreateForm = (req, res) => {
+
+}
+
+exports.listCards = (req, res) => {
+    res.render("cards", {cards: cards});
 }

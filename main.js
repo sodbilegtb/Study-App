@@ -20,8 +20,13 @@ app.get("/decks", deckController.listDecks);
 app.get("/decks/:id", deckController.showDeckDetails);
 app.get("/decks/:id/cards", deckController.listCards);
 app.get("/card/:id", cardController.showCardDetails);
+app.get("/cards", cardController.listCards);
+
 app.get("/404", errorController.pageNotFoundError);
 
 app.listen(app.get("port"), () => {
     console.log(`App started on port ${app.get("port")}.`);
+
 });
+
+
