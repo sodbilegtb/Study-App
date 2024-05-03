@@ -1,5 +1,6 @@
 const cards = [
     {
+        id: 1,
         name: "Card 1",
         front_text: "Card 1",
         back_text: "Back side of the card",
@@ -8,19 +9,18 @@ const cards = [
         times_incorrect: 1,
         tags: [{name: "Subject 1"}, {name: "Subject 2"}]
     },
-    {name: "Card 2"},
-    {name: "Card 3"},
-    {name: "Card 4"},
-    {name: "Card 5"},
-    {name: "Card 6"},
-    {name: "Card 7"},
-    {name: "Card 8"},
+    {id:2, name: "Card 2"},
+    {id:3, name: "Card 3"},
+    {id:4, name: "Card 4"},
+    {id:5, name: "Card 5"},
+    {id:6, name: "Card 6"},
+    {id:7, name: "Card 7"},
+    {id:8, name: "Card 8"},
 ]
 
 exports.showCardDetails = (req, res) => {
     try {
         const card = cards[req.params.id - 1];
-        // TODO
         const decks = [{
             id: 1,
             date_created: new Date(2024, 0, 1),

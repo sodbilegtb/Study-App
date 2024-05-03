@@ -14,13 +14,15 @@
             <span><%= card.name %></span><br>
             <span><%= card.times_studied %></span><br>
             <span><%= card.times_correct %></span><br>
-            <span><%= card.times_incorrect%></span><br>
-            <% for(let i = 0; i < card.tags.length; i++) { %>
-                <span><%= card.tags[i].name %><%= (i !== card.tags.length - 1) ? ',' : ''%></span>
-            <% } %><br>
-            <% for(let i = 0; i < decks.length; i++) { %>
-                <span><%= decks[i].name %><%= (i !== decks.length - 1) ? ',' : ''%></span>
-            <%}%>
+            <span><%= card.times_incorrect %></span><br>
+            <% if(typeof card.tags !== 'undefined') { %>
+                <% for(let i = 0; i < card.tags.length; i++) { %>
+                    <span><%= card.tags[i].name %><%= (i !== card.tags.length - 1) ? ',' : '' %></span>
+                <% } %><br>
+                <% for(let i = 0; i < decks.length; i++) { %>
+                    <span><%= decks[i].name %><%= (i !== decks.length - 1) ? ',' : '' %></span>
+                <% } %>
+            <% } %>
         </div>
     </div>
     <div class="row">
@@ -47,10 +49,13 @@
     </div>
     <div class="row justify-content-center">
         <div class="col col-2" style="width:150px;">
-            <a href="/" style="width:120px" class="btn btn-outline-warning">Edit</a>
+            <a href="/cards" style="width:120px" class="btn btn-outline-primary">Back</a>
         </div>
         <div class="col col-2" style="width:150px;">
-            <a href="/" style="width:120px" class="btn btn-outline-danger">Delete</a>
+            <a style="width:120px" class="btn btn-outline-warning">Edit</a>
+        </div>
+        <div class="col col-2" style="width:150px;">
+            <a style="width:120px" class="btn btn-outline-danger">Delete</a>
         </div>
     </div>
 </div>
