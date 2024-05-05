@@ -1,4 +1,5 @@
 const express = require("express"),
+    mongoose = require("mongoose"),
     layouts = require("express-ejs-layouts"),
     app = express();
 
@@ -9,6 +10,14 @@ const homeController = require("./controllers/homeController"),
 
 app.set("port", process.env.port || 3000);
 app.set("view engine", "ejs");
+
+mongoose.connect("mongodb+srv://user:mLtTkYpXNIO7HY9m@cluster0.sapl7vk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+    {dbName: "agile-web"});
+
+const db = mongoose.connection;
+db.once("open", () => {
+    console.log("Successfully connected to MongoDB using Mongoose");
+});
 
 app.use(layouts);
 app.use(express.json());
