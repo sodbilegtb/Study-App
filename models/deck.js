@@ -7,11 +7,11 @@ const deckSchema = new Schema({
     cards: { type: [Schema.Types.ObjectId], ref: "Card" },
     times_studied: {type: Number, min: 0, default: 0},
     date_created: {type: Date, default: Date.now},
-    last_studied: Date,
+    last_studied: {type:Date, default: undefined},
     notification: {
-        enabled: {type: boolean, default: false},
+        enabled: {type: Boolean, default: false},
         start_date: {type: Date, default: Date.now},
-        days_between: {type: Number, required: true, min: 1}
+        days_between: {type: Number, required: true, min: 1, default: 1}
     }
 });
 
