@@ -25,9 +25,13 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.static('public'))
 
 app.get("/", homeController.showHome);
+
 app.get("/decks", deckController.listDecks);
+app.get("/decks/create", deckController.showCreateDeckForm);
+app.post("/decks/create", deckController.saveNewDeck);
 app.get("/decks/:id", deckController.showDeckDetails);
 app.get("/decks/:id/cards", deckController.listCards);
+
 app.get("/card/:id", cardController.showCardDetails);
 app.get("/cards", cardController.listCards);
 

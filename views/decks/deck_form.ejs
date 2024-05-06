@@ -1,0 +1,55 @@
+<body>
+<div class="container justify-content-center" style="width: 40%; border-radius: 5px; background-color:whitesmoke">
+    <h2 class="text-center" style="margin-bottom:20px">Create new deck</h2>
+    <form method="post" action="/decks/create">
+        <div class="row" style="margin-bottom:10px">
+            <div class="col">
+                <label for="name">Name:</label>
+            </div>
+            <div class="col">
+                <input id="name" name="name" type="text" style="width:400px">
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:10px">
+            <div class="col">
+                <label for="description">Description:</label>
+            </div>
+            <div class="col">
+                <textarea rows="2" id="description" placeholder="Description" name="description" style="width:400px"></textarea>
+            </div>
+        </div>
+        <hr>
+        <div class="row" style="margin-bottom: 10px">
+            <h5>Notifications</h5>
+        </div>
+        <div class="row" style="margin-bottom:10px">
+            <div class="col" style="max-width: 190px">
+                <label for="notification_enabled">Turn on:</label>
+            </div>
+            <div class="col">
+                <input id="notification_enabled" type="checkbox" name="notification_enabled" value="<%= true %>" style="margin-left: 3px; height: 29px; transform: scale(150%)">
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:10px">
+            <div class="col" style="max-width: 190px">
+                <label for="notification_start">Start date:</label>
+            </div>
+            <div class="col" style="width:400px">
+                <input id="notification_start" type="date" name="notification_start">
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:10px">
+            <div class="col" style="max-width: 190px">
+                <label for="notification_days">Reminder every</label>
+            </div>
+            <div class="col">
+                <input type="number" name="notification_days" style="width:60px;" placeholder="3" min="1"> <span>days</span>
+            </div>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-center" style="margin: 20px 0 20px 0">
+            <button type="submit" class="btn btn-success" style="margin-bottom: 20px">Create</button>
+        </div>
+    </form>
+</div>
+</body>
