@@ -45,19 +45,19 @@
                         <%= deck.last_studied ? deck.last_studied.toLocaleDateString('de-DE') : '-' %>
                     </div>
                 </div>
-                <div class="row row-cols-4 justify-content-start" style="margin-top: 10px">
-                    <div class="col">
-                        <a class="btn btn-outline-primary" style="width:80px">Study</a>
-                    </div>
-                    <div class="col">
-                        <a href="<%= '/decks/' + deck.id %>" class="btn btn-outline-secondary" style="width:80px">Details</a>
-                    </div>
-                    <div class="col">
-                        <a class="btn btn-outline-secondary" style="width:80px">Edit</a>
-                    </div>
-                    <div class="col">
-                        <a class="btn btn-outline-danger" style="width:80px">Delete</a>
-                    </div>
+            </div>
+            <div class="card-footer row row-cols-4" style="margin-top: 10px">
+                <div class="col">
+                    <a class="btn btn-outline-primary" style="width:80px">Study</a>
+                </div>
+                <div class="col">
+                    <a href="<%= '/decks/' + deck.id %>" class="btn btn-outline-secondary" style="width:80px">Details</a>
+                </div>
+                <div class="col">
+                    <a class="btn btn-outline-secondary" style="width:80px">Edit</a>
+                </div>
+                <div class="col">
+                    <a class="btn btn-outline-danger" style="width:80px">Delete</a>
                 </div>
             </div>
         </div>
