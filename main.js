@@ -7,6 +7,7 @@ const homeController = require("./controllers/homeController"),
     deckController = require("./controllers/deckController"),
     cardController = require("./controllers/cardController"),
     errorController = require("./controllers/errorController");
+const {errorHandler} = require("./controllers/errorController");
 
 app.set("port", process.env.port || 3000);
 app.set("view engine", "ejs");
@@ -25,13 +26,25 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.static('public'))
 
 app.get("/", homeController.showHome);
+
 app.get("/decks", deckController.listDecks);
+app.get("/decks/create", deckController.showCreateDeckForm);
+app.post("/decks/create", deckController.saveNewDeck);
 app.get("/decks/:id", deckController.showDeckDetails);
 app.get("/decks/:id/cards", deckController.listCards);
+
 app.get("/card/:id", cardController.showCardDetails);
 app.get("/cards", cardController.listCards);
 
-app.get("/404", errorController.pageNotFoundError);
+app.get("/cards/:id/edit", cardController.getCardEditForm);
+app.post("/cards/:id/edit", cardController.postCardEditForm);
+app.post("/cards/:id/delete", cardController.deleteCard);
+
+app.get("/cards/create", cardController.showCardCreateForm);
+app.post("/cards/create", cardController.createCard);
+
+
+app.use(errorHandler);
 
 app.listen(app.get("port"), () => {
     console.log(`App started on port ${app.get("port")}.`);

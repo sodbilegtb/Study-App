@@ -70,7 +70,15 @@
                         <textarea id="back_text" readonly disabled><%= card.back_text %></textarea>
                     </div>
                 </div>
-                <div class="col-1" style="margin: 10px">
+                <div class="col-1" style="margin-top: 10px">
+                        <div class="row">
+                            <div class="col-1" >
+                            <a href="/cards/create" class="btn btn-primary">Create</a>
+                        </div>
+                    </div>    
+                </div>
+                
+                    <div class="col-1" style="margin-top: 10px">        
                     <div class="row">
                         <a class="btn btn-outline-primary" href="card/<%= card.id %>">Details</a>
                     </div>

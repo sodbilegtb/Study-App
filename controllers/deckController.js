@@ -1,90 +1,68 @@
-const decks = [
-    {
-        id: 1,
-        date_created: new Date(2024, 0, 1),
-        name: "Deck 1",
-        description: "Description",
-        last_studied: new Date(2024, 3, 22),
-        times_studied: 1,
-        cards: null,
-    },
-    {
-        id: 2,
-        date_created: new Date(2024, 0, 1),
-        name: "Deck 2",
-        description: "Description",
-        last_studied: null,
-        times_studied: 1,
-        cards: []
-    },
-    {
-        id: 3,
-        date_created: new Date(2024, 0, 1),
-        name: "Deck 3",
-        description: "Description",
-        last_studied: null,
-        times_studied: 0,
-        cards: [{name: "Card 1"}, {name: "Card 2"}]
-    },
-    {
-        id: 4,
-        date_created: new Date(2024, 0, 1),
-        name: "Spanish",
-        description: "Unit 2 Vocabulary",
-        last_studied: null,
-        times_studied: 0,
-        cards: [{name: "Card 1"}, {name: "Card 2"}]
-    },
-    {
-        id: 5,
-        date_created: new Date(2024, 0, 1),
-        name: "Deck 5",
-        description: "Description",
-        last_studied: null,
-        times_studied: 0,
-        cards: [
-            {
-                name: "Card 1",
-                front_text: "Card 1",
-                back_text: "Back side of the card",
-                times_studied: 3,
-                times_correct: 2,
-                times_incorrect: 1
-            },
-            {name: "Card 2"},
-            {name: "Card 3"},
-            {name: "Card 4"},
-            {name: "Card 5"}]
-    }
-]
+const Deck = require("../models/deck");
 
-exports.listDecks = (req, res) => {
-    res.render("decks_list", {
-        title: "List of Decks",
-        decks: decks,
-    })
-}
-exports.showDeckDetails = (req, res) => {
-    try {
-        let deck = decks[req.params.id - 1];
-        res.render("deck_details", {
-            title: "Details",
-            deck: deck,
-            cards: deck.cards
-        });
-    } catch (e) {
-        res.redirect("/404");
-    }
+exports.listDecks = async (req, res, next) => {
+    await Deck.find()
+        .then(result => {
+            res.render("decks/decks_list", {
+                title: "List of Decks",
+                decks: result
+            });
+        })
+        .catch(err => next(err));
 }
 
-exports.listCards = (req, res) => {
-    try {
-        let deck = decks[req.params.id - 1];
-        res.render("cards", {
-            title: "Cards",
-            cards: deck.cards
-        });
-    } catch (e) {
-        res.redirect("/404");
-    }
+exports.showDeckDetails = async (req, res, next) => {
+    await Deck.findById(req.params.id)
+        // .populate("cards") TODO
+        .then(result => {
+            res.render("decks/deck_details", {
+                deck: result,
+                cards: result.cards
+            })
+        })
+        .catch(err => next(err));
+}
+
+exports.listCards = async (req, res, next) => {
+    await Deck.findById(req.params.id)
+        // .populate("cards") TODO
+        .then(result => {
+            res.render("cards", {
+                title: "Cards",
+                cards: result.cards
+            });
+        })
+        .catch(err => next(err))
+}
+
+exports.showCreateDeckForm = async (req, res) => {
+    res.render("decks/deck_form", {});
+}
+
+exports.saveNewDeck = async (req, res, next) => {
+    const newDeck = new Deck({
+        name: req.body.name,
+        description: req.body.description,
+        notification: {
+            enabled: req.body.notification_enabled,
+            start_date: req.body.notification_start,
+            days_between: req.body.notification_days
+        }
+    });
+    await newDeck.save()
+        .then(result => {
+            res.render("decks/deck_details", {
+                deck: result,
+                cards: result.cards
+            });
+        })
+        .catch(err => {
+            if (err.name === 'ValidationError') {
+                res.render("decks/deck_form", {
+                    errors: [err]
+                })
+            } else {
+                next(err);
+            }
+        })
 }
