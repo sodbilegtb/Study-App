@@ -52,11 +52,11 @@
             <a href="/cards" style="width:120px" class="btn btn-outline-primary">Back</a>
         </div>
         <div class="col col-2" style="width:150px;">
-            <a style="width:120px" class="btn btn-outline-warning">Edit</a>
-        </div>
+            <a href="/cards/<%= card._id %>/edit" style="width:120px" class="btn btn-outline-warning">Edit</a>
+        </div>        
         <div class="col col-2" style="width:150px;">
-            <a style="width:120px" class="btn btn-outline-danger">Delete</a>
-        </div>
+            <form action="/cards/<%= card._id %>/delete" method="post">
+                <button type="submit" style="width:120px" class="btn btn-outline-danger">Delete</button>
     </div>
 </div>
 </body>

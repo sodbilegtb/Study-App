@@ -36,6 +36,14 @@ app.get("/decks/:id/cards", deckController.listCards);
 app.get("/card/:id", cardController.showCardDetails);
 app.get("/cards", cardController.listCards);
 
+app.get("/cards/:id/edit", cardController.getCardEditForm);
+app.post("/cards/:id/edit", cardController.postCardEditForm);
+app.post("/cards/:id/delete", cardController.deleteCard);
+
+app.get("/cards/create", cardController.showCardCreateForm);
+app.post("/cards/create", cardController.createCard);
+
+
 app.use(errorHandler);
 
 app.listen(app.get("port"), () => {
