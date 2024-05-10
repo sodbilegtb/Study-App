@@ -7,6 +7,7 @@ const homeController = require("./controllers/homeController"),
     deckController = require("./controllers/deckController"),
     cardController = require("./controllers/cardController"),
     errorController = require("./controllers/errorController");
+const {errorHandler} = require("./controllers/errorController");
 
 app.set("port", process.env.port || 3000);
 app.set("view engine", "ejs");
@@ -35,7 +36,7 @@ app.get("/decks/:id/cards", deckController.listCards);
 app.get("/card/:id", cardController.showCardDetails);
 app.get("/cards", cardController.listCards);
 
-app.get("/404", errorController.pageNotFoundError);
+app.use(errorHandler);
 
 app.listen(app.get("port"), () => {
     console.log(`App started on port ${app.get("port")}.`);

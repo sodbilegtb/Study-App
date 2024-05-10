@@ -1,6 +1,6 @@
 const Deck = require("../models/deck");
 
-exports.listDecks = async (req, res) => {
+exports.listDecks = async (req, res, next) => {
     await Deck.find()
         .then(result => {
             res.render("decks/decks_list", {
@@ -8,13 +8,10 @@ exports.listDecks = async (req, res) => {
                 decks: result
             });
         })
-        .catch(err => { // TODO
-            console.log(err);
-            res.redirect("/404");
-        });
+        .catch(err => next(err));
 }
 
-exports.showDeckDetails = async (req, res) => {
+exports.showDeckDetails = async (req, res, next) => {
     await Deck.findById(req.params.id)
         // .populate("cards") TODO
         .then(result => {
@@ -23,13 +20,10 @@ exports.showDeckDetails = async (req, res) => {
                 cards: result.cards
             })
         })
-        .catch(err => { // TODO
-            console.log(err);
-            res.redirect("/404");
-        });
+        .catch(err => next(err));
 }
 
-exports.listCards = async (req, res) => {
+exports.listCards = async (req, res, next) => {
     await Deck.findById(req.params.id)
         // .populate("cards") TODO
         .then(result => {
@@ -38,18 +32,14 @@ exports.listCards = async (req, res) => {
                 cards: result.cards
             });
         })
-        .catch(err => {
-            console.log(err)
-            res.redirect("/404");
-        })
+        .catch(err => next(err))
 }
 
 exports.showCreateDeckForm = async (req, res) => {
     res.render("decks/deck_form", {});
 }
 
-exports.saveNewDeck = async (req, res) => {
-
+exports.saveNewDeck = async (req, res, next) => {
     const newDeck = new Deck({
         name: req.body.name,
         description: req.body.description,
@@ -67,7 +57,12 @@ exports.saveNewDeck = async (req, res) => {
             });
         })
         .catch(err => {
-            console.log(err); // TODO
-            res.redirect("/decks");
+            if (err.name === 'ValidationError') {
+                res.render("decks/deck_form", {
+                    errors: [err]
+                })
+            } else {
+                next(err);
+            }
         })
 }

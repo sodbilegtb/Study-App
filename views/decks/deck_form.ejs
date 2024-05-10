@@ -1,4 +1,13 @@
 <body>
+<% if(typeof errors !== 'undefined') { %>
+<div class="container justify-content-center" style="width: 40%;">
+    <ul>
+        <% errors.forEach(e => { %>
+        <li><%=e._message%></li>
+        <% }) %>
+    </ul>
+</div>
+<%}%>
 <div class="container justify-content-center" style="width: 40%; border-radius: 5px; background-color:whitesmoke">
     <h2 class="text-center" style="margin-bottom:20px">Create new deck</h2>
     <form method="post" action="/decks/create">
