@@ -82,7 +82,6 @@ exports.saveNewDeck = async (req, res, next) => {
 
 // TODO Sprint 05
 exports.updateDeck = async (req, res, next) => {
-
     const { name, description } = req.body
     const update = {
         name,

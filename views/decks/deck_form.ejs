@@ -36,10 +36,17 @@
                 <label for="notification_enabled">Turn on:</label>
             </div>
             <div class="col">
-                <% let checked = (typeof deck !== "undefined" && deck.notification.enabled) ? "checked" : "" %>
+                <%let checked = "";
+                if (typeof deck !== "undefined") {
+                    if (deck.notification.enabled) {
+                        checked = "checked"
+                    }
+                }
+                %>
                 <input id="notification_enabled"
                        type="checkbox"
                        name="notification_enabled"
+                       value="true"
                        style="margin-left: 3px; height: 29px; transform: scale(150%)"
                        <%= checked %>
                 >
@@ -51,11 +58,18 @@
             </div>
             <div class="col" style="width:400px">
                 <!-- https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd -->
+                <%  let date = new Date();
+                    let dateString = date.toISOString().split('T')[0];
+                    if (typeof deck !== 'undefined') {
+                        if (deck.notification.enabled) {
+                            date = deck.notification.start_date.toISOString().split('T')[0]
+                        }
+                    }
+                %>
                 <input id="notification_start"
                        type="date"
-                       min="<%= Date.now() %>"
                        name="notification_start"
-                       value="<%= typeof deck !== 'undefined' ? deck.notification.start_date.toISOString().split('T')[0] : "" %>">
+                       value="<%= dateString %>">
             </div>
         </div>
         <div class="row" style="margin-bottom:10px">
