@@ -78,7 +78,7 @@
         <% } %>
     </div>
     <div class="d-flex justify-content-center" style="margin-top: 10px">
-        <a class="btn btn-outline-primary" style="width: 80px; margin: 2px">Edit</a>
+        <a href="<%= "/decks/" + deck._id + "/edit" %>" class="btn btn-outline-primary" style="width: 80px; margin: 2px">Edit</a>
         <a href="/decks" class="btn btn-outline-secondary" style="width: 80px; margin: 2px">Back</a>
     </div>
     <% if (deck.cards && deck.cards.length > 0) { %>

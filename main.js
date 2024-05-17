@@ -32,6 +32,8 @@ app.get("/decks/create", deckController.showCreateDeckForm);
 app.post("/decks/create", deckController.saveNewDeck);
 app.get("/decks/:id", deckController.showDeckDetails);
 app.get("/decks/:id/cards", deckController.listCards);
+app.get("/decks/:id/edit", deckController.showEditDeckForm); // TODO SPRINT 05
+app.post("/decks/:id/edit", deckController.updateDeck); // TODO SPRINT 05
 
 app.get("/card/:id", cardController.showCardDetails);
 app.get("/cards", cardController.listCards);
@@ -43,12 +45,10 @@ app.post("/cards/:id/delete", cardController.deleteCard);
 app.get("/cards/create", cardController.showCardCreateForm);
 app.post("/cards/create", cardController.createCard);
 
-
 app.use(errorHandler);
 
 app.listen(app.get("port"), () => {
     console.log(`App started on port ${app.get("port")}.`);
-
 });
 
 
