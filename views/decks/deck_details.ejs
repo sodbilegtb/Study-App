@@ -32,7 +32,7 @@
                 Date created:
             </div>
             <div class="col-4">
-                <%= deck.date_created.toLocaleDateString('de-DE') %>
+                <%= deck.createdAt.toLocaleDateString('de-DE') %>
             </div>
         </div>
         <div class="row">
@@ -72,7 +72,7 @@
             <div class="row">
                 <div class="col-1" style="width: 10px"></div>
                 <div class="col">
-                    Starting from <strong><%= deck.notification.start_date.toLocaleDateString('de-DE') %></strong>
+                    Starting on <strong><%= deck.notification.start_date.toLocaleDateString('de-DE') %></strong>
                 </div>
             </div>
         <% } %>
@@ -82,9 +82,9 @@
         <a href="/decks" class="btn btn-outline-secondary" style="width: 80px; margin: 2px">Back</a>
     </div>
     <% if (deck.cards && deck.cards.length > 0) { %>
-        <div class="text-center" style="margin-top:10px">
-            <h3>Cards:</h3>
-            <%- include('cards') %>
+        <div class="container" style="margin-top:10px; width: 60%">
+            <h4 class="text-center">Cards:</h4>
+            <%- include('card_list') -%>
         </div>
     <% } %>
     </body>

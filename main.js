@@ -12,6 +12,7 @@ const {errorHandler} = require("./controllers/errorController");
 app.set("port", process.env.port || 3000);
 app.set("view engine", "ejs");
 
+mongoose.Promise = global.Promise
 mongoose.connect("mongodb+srv://user:mLtTkYpXNIO7HY9m@cluster0.sapl7vk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
     {dbName: "agile-web"});
 
@@ -32,8 +33,8 @@ app.get("/decks/create", deckController.showCreateDeckForm);
 app.post("/decks/create", deckController.saveNewDeck);
 app.get("/decks/:id", deckController.showDeckDetails);
 app.get("/decks/:id/cards", deckController.listCards);
-app.get("/decks/:id/edit", deckController.showEditDeckForm); // TODO SPRINT 05
-app.post("/decks/:id/edit", deckController.updateDeck); // TODO SPRINT 05
+app.get("/decks/:id/edit", deckController.showEditDeckForm);
+app.post("/decks/:id/edit", deckController.updateDeck);
 
 app.get("/card/:id", cardController.showCardDetails);
 app.get("/cards", cardController.listCards);

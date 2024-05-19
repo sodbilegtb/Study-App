@@ -9,7 +9,6 @@ exports.showCardDetails = async (req, res) => {
         const decks = [
             {
                 id: 1,
-                date_created: new Date(2024, 0, 1),
                 name: "Deck 1",
                 description: "Description",
                 last_studied: new Date(2024, 3, 22),
