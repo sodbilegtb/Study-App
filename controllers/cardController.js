@@ -24,31 +24,33 @@ exports.showCardDetails = async (req, res) => {
 
 exports.getCardEditForm = async (req, res) => {
     try {
-        const card = await CardModel.findById(req.params.id);
-        if (!card) {
-            return res.redirect("/cards");
-        }
-        res.render("card_edit_form", { card });
+      const card = await CardModel.findById(req.params.id);
+      if (!card) {
+        return res.redirect("/cards");
+      }
+      res.render("card_edit_form", { card });
     } catch (error) {
-        console.error("Error fetching card:", error);
-        res.redirect("/cards");
+      console.error("Error fetching card:", error);
+      res.redirect("/cards");
     }
-};
+  };
 
-exports.postCardEditForm = async (req, res) => {
+  exports.postCardEditForm = async (req, res) => {
     try {
-        const cardId = req.params.id;
-        const updatedCardData = {
-            
-        };
-        const updatedCard = await CardModel.findByIdAndUpdate(cardId, updatedCardData, { new: true });
-        res.redirect(`/cards/${updatedCard._id}`);
+      const cardId = req.params.id;
+      const updatedCardData = {
+        name: req.body.name,
+        front_text: req.body.front_text,
+        back_text: req.body.back_text,
+        tags: req.body.tags.split(','),
+      };
+      const updatedCard = await CardModel.findByIdAndUpdate(cardId, updatedCardData, { new: true });
+      res.redirect(`/cards`);
     } catch (error) {
-        console.error("Error updating card:", error);
-        res.redirect("/cards");
+      console.error("Error updating card:", error);
+      res.redirect("/cards");
     }
-};
-
+  };
 exports.deleteCard = async (req, res) => {
     try {
         const cardId = req.params.id;

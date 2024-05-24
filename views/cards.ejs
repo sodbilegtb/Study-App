@@ -1,55 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cards</title>
+    <style>
+        .container {
+            margin: 0 auto;
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+        .card-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .card {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-right: 20px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        .card-header {
+            margin-bottom: 10px;
+        }
+        .card h5 {
+            margin: 0;
+        }
+        .row {
+            display: flex;
+            margin: 10px 0;
+        }
+        .col {
+            flex: 1;
+            padding: 5px;
+        }
+        .col-1 {
+            flex: 0 0 100px;
+            padding: 5px;
+        }
+        .tag, .deck {
+            background-color: #ddd;
+            padding: 5px;
+            margin-right: 5px;
+            border-radius: 3px;
+        }
+        .copy-btn {
+            margin-top: 10px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            resize: none;
+        }
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .btn-group a {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
 <body>
     <div class="container">
         <% cards.forEach(card => { %>
             <div class="row card-row">
                 <div class="col card">
-                        <div class="row card-header">
-                            <h5>Details</h5>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                Name:
-                            </div>
-                            <div class="col">
-                                <%= card.name %>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                Times studied:
-                            </div>
-                            <div class="col">
-                                <%= card.times_studied %>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                Times correct:
-                            </div>
-                            <div class="col">
-                                <%= card.times_correct %>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                Times incorrect:
-                            </div>
-                            <div class="col">
-                                <%= card.times_incorrect %>
-                            </div>
-                        </div>
-                    <div class="row">
-                        <div class="col">
-                            Tags:
-                        </div>
-                        <div class="col">
-    
-                        </div>
+                    <div class="row card-header">
+                        <h5>Details</h5>
                     </div>
                     <div class="row">
-                        <div class="col">
-                            Decks:
-                        </div>
+                        <div class="col">Name:</div>
+                        <div class="col"><%= card.name %></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">Times studied:</div>
+                        <div class="col"><%= card.times_studied %></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">Times correct:</div>
+                        <div class="col"><%= card.times_correct %></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">Times incorrect:</div>
+                        <div class="col"><%= card.times_incorrect %></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">Tags:</div>
+                        <div class="col"><span class="tag"><%= card.tag %></span></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">Decks:</div>
+                        <div class="col"><span class="deck"><%= card.deck %></span></div>
                     </div>
                 </div>
                 <div class="col card">
@@ -57,8 +103,7 @@
                         <h5>Front</h5>
                     </div>
                     <div class="row">
-                        <label for="front_text"></label>
-                        <textarea id="front_text" readonly disabled><%= card.front_text %></textarea>
+                        <textarea readonly disabled><%= card.front_text %></textarea>
                     </div>
                 </div>
                 <div class="col card">
@@ -66,28 +111,16 @@
                         <h5>Back</h5>
                     </div>
                     <div class="row">
-                        <label for="back_text"></label>
-                        <textarea id="back_text" readonly disabled><%= card.back_text %></textarea>
+                        <textarea readonly disabled><%= card.back_text %></textarea>
                     </div>
                 </div>
-                <div class="col-1" style="margin-top: 10px">
-                        <div class="row">
-                            <div class="col-1" >
-                            <a href="/cards/create" class="btn btn-primary">Create</a>
-                        </div>
-                    </div>    
-                </div>
-                
-                    <div class="col-1" style="margin-top: 10px">        
-                    <div class="row">
-                        <a class="btn btn-outline-primary" href="card/<%= card.id %>">Details</a>
-                    </div>
-                    <div class="row" style="margin-top: 10px">
-                        <a class="btn btn-outline-warning">Edit</a>
-                    </div>
+                <div class="col-1 btn-group">
+                    <a href="/cards/create" class="btn btn-primary">Create</a>
+                    <a class="btn btn-outline-primary" href="card/<%= card.id %>">Details</a>
+                    <a class="btn btn-outline-warning" href="cards/<%= card.id %>/edit">Edit</a>
                 </div>
             </div>
-    
         <% }) %>
     </div>
-    </body>
+</body>
+</html>
