@@ -1,9 +1,10 @@
 const httpStatus = require("http-status-codes");
+const {OK} = require("http-status-codes");
 
 exports.errorHandler = (err, req, res, next) => {
     console.log(err.stack);
-    res.status(500)
-    res.render("error", { error: err.name })
+    if (res.statusCode === OK) res.status(500);
+    res.render("error", { error: err })
 };
 
 exports.pageNotFoundError = (req, res) => {
