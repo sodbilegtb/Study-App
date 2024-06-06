@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="text-center" style="margin-bottom: 10px">
+        <h2>Users</h2>
+    </div>
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">First name</th>
+                <th scope="col">Last name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Password</th>
+                <th scope="col">Decks</th>
+                <th scope="col">Cards</th>
+            </tr>
+        </thead>
+        <tbody>
+        <% users.forEach(user => { %>
+        <tr>
+            <% let decksCount = userDecks[user._id]%>
+            <% let cardsCount = userCards[user._id]%>
+            <td><%= user.name.first %></td>
+            <td><%= user.name.last %></td>
+            <td><%= user.email %></td>
+            <td><%= user.password %></td>
+            <td><%= decksCount%></td>
+            <td><%= cardsCount%></td>
+        </tr>
+        <% }) %>
+        </tbody>
+    </table>
+</div>
