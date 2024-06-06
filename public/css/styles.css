@@ -1,3 +1,37 @@
+.body {
+    padding-top: 20px;
+    background-color: whitesmoke;
+    height: 100vh;
+}
+
+.card-header {
+    background-color: white;
+}
+
+.details {
+    width: 55%;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15);
+}
+
+.details > .row > div:first-child {
+    font-weight: bold;
+}
+
+.card-body > .row {
+    padding-bottom: 10px;
+}
+
+h2, h4 {
+    padding: 5px 0 10px 0;
+}
+
+h2, h4, h5 {
+    font-weight: bold;
+}
+
 .deck-grid {
     display: flex;
     flex-flow: row wrap;
@@ -9,10 +43,15 @@
 
 .deck {
     width: max(30%, 400px);
+    min-height: 250px;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15);
 }
 
-.navbar {
-    margin-bottom: 30px;
+.create-deck {
+    width: 45%;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15);
 }
 
 .nav-item {
@@ -46,7 +85,19 @@
 
 .card-header {
     height: 50px;
-    text-align:center;
+    text-align: center;
+}
+
+.cards-container {
+    width: 55%;
+    margin-top:10px;
+    padding: 0;
+}
+
+.cards-table {
+    background-color: white;
+    width: 100%;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15);
 }
 
 

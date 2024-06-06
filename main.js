@@ -6,6 +6,7 @@ const express = require("express"),
 const homeController = require("./controllers/homeController"),
     deckController = require("./controllers/deckController"),
     cardController = require("./controllers/cardController"),
+    usersController = require("./controllers/userController"),
     errorController = require("./controllers/errorController");
 
 const User = require("./models/user");
@@ -42,6 +43,7 @@ app.use((req, res, next) => {
 });
 
 app.get("/", homeController.showHome);
+app.get("/users", usersController.index, usersController.indexView);
 
 app.get("/decks", deckController.index, deckController.indexView); // shows all decks
 app.get("/decks/create", deckController.getCardOptionsNew, deckController.createView); // shows create form
