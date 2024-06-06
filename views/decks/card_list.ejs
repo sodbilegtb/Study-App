@@ -1,0 +1,26 @@
+<table class="table">
+    <thead class="thead-light">
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Front</th>
+        <th scope="col">Back</th>
+        <th scope="col">Times studied</th>
+        <th scope="col">Times correct</th>
+        <th scope="col">Times incorrect</th>
+        <th scope="col">Tags</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% cards.forEach(c => { %>
+    <tr>
+        <td><%= c.name %></td>
+        <td><%= c.front_text%></td>
+        <td><%= c.back_text%></td>
+        <td><%= c.times_studied%></td>
+        <td><%= c.times_correct%></td>
+        <td><%= c.times_incorrect%></td>
+        <td><%= c.tags%></td>
+    </tr>
+    <% })%>
+    </tbody>
+</table>

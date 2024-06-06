@@ -1,56 +1,94 @@
-const cards = [
-    {
-        id: 1,
-        name: "Card 1",
-        front_text: "Card 1",
-        back_text: "Back side of the card",
-        times_studied: 3,
-        times_correct: 2,
-        times_incorrect: 1,
-        tags: [{name: "Subject 1"}, {name: "Subject 2"}]
-    },
-    {id:2, name: "Card 2"},
-    {id:3, name: "Card 3"},
-    {id:4, name: "Card 4"},
-    {id:5, name: "Card 5"},
-    {id:6, name: "Card 6"},
-    {id:7, name: "Card 7"},
-    {id:8, name: "Card 8"},
-]
+const CardModel = require("../models/card");
 
-exports.showCardDetails = (req, res) => {
+exports.showCardDetails = async (req, res) => {
     try {
-        const card = cards[req.params.id - 1];
-        const decks = [{
-            id: 1,
-            date_created: new Date(2024, 0, 1),
-            name: "Deck 1",
-            description: "Description",
-            last_studied: new Date(2024, 3, 22),
-            times_studied: 1,
-        }];
-        res.render("card_detail", {card: card, decks: decks});
-    } catch {
+        const card = await CardModel.findById(req.params.id);
+        if (!card) {
+            return res.redirect("/cards");
+        }
+        const decks = [
+            {
+                id: 1,
+                name: "Deck 1",
+                description: "Description",
+                last_studied: new Date(2024, 3, 22),
+                times_studied: 1,
+            }
+        ];
+        res.render("card_detail", { card: card, decks: decks });
+    } catch (error) {
+        console.error("Error fetching card:", error);
         res.redirect("/cards");
     }
-}
+};
 
-exports.getCardUpdateForm = (req, res) => {
+exports.getCardEditForm = async (req, res) => {
+    try {
+      const card = await CardModel.findById(req.params.id);
+      if (!card) {
+        return res.redirect("/cards");
+      }
+      res.render("card_edit_form", { card });
+    } catch (error) {
+      console.error("Error fetching card:", error);
+      res.redirect("/cards");
+    }
+  };
 
-}
+  exports.postCardEditForm = async (req, res) => {
+    try {
+      const cardId = req.params.id;
+      const updatedCardData = {
+        name: req.body.name,
+        front_text: req.body.front_text,
+        back_text: req.body.back_text,
+        tags: req.body.tags.split(','),
+      };
+      const updatedCard = await CardModel.findByIdAndUpdate(cardId, updatedCardData, { new: true });
+      res.redirect(`/cards`);
+    } catch (error) {
+      console.error("Error updating card:", error);
+      res.redirect("/cards");
+    }
+  };
+exports.deleteCard = async (req, res) => {
+    try {
+        const cardId = req.params.id;
+        await CardModel.findByIdAndDelete(cardId);
+        res.redirect("/cards");
+    } catch (error) {
+        console.error("Error deleting card:", error);
+        res.redirect("/cards");
+    }
+};
+exports.listCards = async (req, res) => {
+    try {
+        const cards = await CardModel.find();
+        res.render("cards", { cards: cards });
+    } catch (error) {
+        console.error("Error fetching cards:", error);
+        res.redirect("/cards");
+    }
+};
 
-exports.postCardUpdateForm = (req, res) => {
+exports.showCardCreateForm = (req, res) => {
+    res.render("card_create_form");
+};
 
-}
+exports.createCard = async (req, res) => {
+    try {
+        const { name, front_text, back_text, tags } = req.body;
+        const card = new CardModel({
+            name,
+            front_text,
+            back_text,
+            tags: tags ? tags.split(",") : [],
+        });
+        await card.save();
+        res.redirect("/cards");
+    } catch (error) {
+        console.error("Error creating card:", error);
+        res.redirect("/cards/create");
+    }
+};
 
-exports.getCardCreateForm = (req, res) => {
-    res.render("card_form");
-}
-
-exports.postCardCreateForm = (req, res) => {
-
-}
-
-exports.listCards = (req, res) => {
-    res.render("cards", {cards: cards});
-}

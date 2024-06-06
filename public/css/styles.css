@@ -3,21 +3,26 @@
     flex-flow: row wrap;
     justify-content: center;
 
-    width: 80%;
-    margin-left: 10%
+    width: 90%;
+    margin-left: 5%
 }
 
 .deck {
     width: max(30%, 400px);
-    height: 180px;
-    margin: 0 5px 10px 0
+}
+
+.navbar {
+    margin-bottom: 30px;
 }
 
 .nav-item {
     width: 150px;
-    padding: 5px;
-    margin-right: 20px;
     text-align: center;
+}
+
+.nav-link {
+    padding: 10px;
+    background-color: white;
 }
 
 .col {
@@ -25,8 +30,13 @@
 }
 
 .card {
-    margin: 10px;
+    margin: 5px;
     /*text-align: center;*/
+}
+
+.card-footer {
+    margin: 0 1px 0 1px;
+    background-color: white;
 }
 
 #front_text, #back_text {

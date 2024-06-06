@@ -1,0 +1,130 @@
+<body>
+<% if(typeof errors !== 'undefined') { %>
+    <div class="container justify-content-center" style="width: 40%;">
+        <ul>
+            <% errors.forEach(e => { %>
+                <li><%= e._message %></li>
+            <% }) %>
+        </ul>
+    </div>
+<% } %>
+<div class="container justify-content-center" style="width: 40%; border-radius: 5px; background-color:whitesmoke">
+    <h2 class="text-center" style="margin-bottom:20px"><%= title %></h2>
+    <form method="post" action="">
+        <div class="row" style="margin-bottom:10px">
+            <div class="col">
+                <label for="name">Name:</label>
+            </div>
+            <div class="col">
+                <input id="name" name="name" type="text" style="width:400px"
+                       value="<%= typeof deck !== 'undefined' ? deck.name : "" %>">
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:10px">
+            <div class="col">
+                <label for="description">Description:</label>
+            </div>
+            <div class="col">
+                <textarea rows="2" id="description" placeholder="Description" name="description"
+                          style="width:400px"><%= typeof deck !== 'undefined' ? deck.description : "" %></textarea>
+            </div>
+        </div>
+        <hr>
+        <div class="row" style="margin-bottom: 10px">
+            <h5>Notifications</h5>
+        </div>
+        <div class="row" style="margin-bottom:10px">
+            <div class="col" style="max-width: 190px">
+                <label for="notification_enabled">Turn on:</label>
+            </div>
+            <div class="col">
+                <% let checked = "";
+                if (typeof deck !== "undefined") {
+                    if (deck.notification.enabled) {
+                        checked = "checked"
+                    }
+                }
+                %>
+                <input id="notification_enabled"
+                       type="checkbox"
+                       name="notification_enabled"
+                       value="true"
+                       style="margin-left: 3px; height: 29px; transform: scale(150%)"
+                        <%= checked %>
+                >
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:10px">
+            <div class="col" style="max-width: 190px">
+                <label for="notification_start">Start date:</label>
+            </div>
+            <div class="col" style="width:400px">
+                <!-- https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd -->
+                <% let date = new Date();
+                let dateString = date.toISOString().split('T')[0];
+                if (typeof deck !== 'undefined') {
+                    if (deck.notification.enabled) {
+                        date = deck.notification.start_date.toISOString().split('T')[0]
+                    }
+                }
+                %>
+                <input id="notification_start"
+                       type="date"
+                       name="notification_start"
+                       value="<%= dateString %>">
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:10px">
+            <div class="col" style="max-width: 190px">
+                <label for="notification_days">Reminder every</label>
+            </div>
+            <div class="col">
+                <input type="number" name="notification_days" style="width:60px;" placeholder="3" min="1"
+                       value="<%= typeof deck !== 'undefined' ? deck.notification.days_between : "" %>">
+                <span>days</span>
+            </div>
+        </div>
+        <hr>
+        <div class="row" style="margin-bottom: 10px">
+            <h5>Cards</h5>
+        </div>
+        <div class="row">
+            <!-- Cards currently in the deck - for when this is used to edit a deck and to remove cards -->
+            <% if (typeof deck !== 'undefined' && deck.cards.length > 0) { %>
+                <div class="col" style="width: 50%">
+                    <h6><strong>Currently in deck:</strong></h6>
+                    <span>Select one or more cards to remove them from the deck.</span>
+                    <select name="cards_to_remove" id="cards_to_remove" style="width: 100%" multiple>
+                        <% deck.cards.forEach(c => { %>
+                            <option value="<%= c._id %>"><%= c.name %></option>
+                        <% }) %>
+                    </select>
+                </div>
+            <% } %>
+            <!-- Cards that can be added to the deck (all cards when creating a new deck, all cards minus cards in the deck when editing -->
+            <% if(cards.length > 0) { %>
+                <div class="col">
+                    <h6><strong>Available cards:</strong></h6>
+                    <span>Select one or more cards to add them to the deck.</span>
+                    <div class="row" style="margin-bottom:10px">
+                        <div class="col">
+                            <select name="cards_to_add" id="cards_to_add" style="width:100%" multiple>
+                                <% cards.forEach(c => { %>
+                                    <option value="<%= c._id %>"><%= c.name %> - <%= c.front_text %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-center" style="margin: 20px 0 20px 0">
+            <a href="/decks" class="btn btn-secondary"
+               style="text-align: center; width: 160px; height: 40px; margin: 2px">Back</a>
+            <button type="submit" class="btn btn-success"
+                    style="width: 160px; height: 40px; margin: 2px 2px 20px 2px"><%= typeof deck === 'undefined' ? 'Create' : 'Save changes' %></button>
+        </div>
+    </form>
+</div>
+</body>
