@@ -52,5 +52,11 @@ module.exports = [
         name: "Test card 9",
         front_text: "Question",
         back_text: "Answer"
+    },
+    {
+        user: null,
+        name: "Test card 10",
+        front_text: "Question",
+        back_text: "Answer"
     }
 ]

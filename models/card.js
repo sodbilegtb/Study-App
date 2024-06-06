@@ -12,16 +12,10 @@ const cardSchema = new Schema({
     times_incorrect: { type: Number, default: 0 },
     tags: [{ name: String }],
 });
-
-// https://mongoosejs.com/docs/middleware.html
-cardSchema.pre('deleteOne', function(next) {
-    console.log('Middleware on parent document'); // Will be executed
-});
-
 cardSchema.pre('deleteMany', function() {
     Deck.find({cards: this._id}).exec()
         .then((deck) => {
-            if (deck.length > 0) {
+            if (deck.cards) {
                 console.log(deck)
                 console.log(deck.cards)
                 deck.cards = deck.cards.filter(c => !c._id.equals(this._id))

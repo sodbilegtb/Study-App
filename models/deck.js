@@ -5,7 +5,7 @@ const deckSchema = new Schema({
     user: {type: Schema.Types.ObjectId, ref: "User", required: true},
     name: {type: String, minLength: 1},
     description: String,
-    cards: [{type: Schema.Types.ObjectId, ref: "Card", unique: true}],
+    cards: [{type: Schema.Types.ObjectId, ref: "Card"}],
     times_studied: {type: Number, min: 0, default: 0},
     last_studied: {type:Date, default: undefined},
     notification: {

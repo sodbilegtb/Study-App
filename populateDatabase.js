@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose")
 
 const User = require("./models/user"),
     Deck = require("./models/deck"),
@@ -16,141 +16,45 @@ db.once("open", () => {
     console.log("Successfully connected to MongoDB using Mongoose");
 });
 
-async function deleteUsers() {
-    await User.deleteMany()
-        .exec()
-        .then(result => {
-            console.log(`Deleted ${result.deletedCount} users.`);
-        })
-        .catch(error => {
-            console.log(`Error deleting users: ${error}`);
-        });
-}
-
-function saveUser(user) {
-    User.create(user)
-        .then(user => {
-            console.log(`Saved user: ${user}.`)
-        })
-        .catch(error => {
-            console.log(`Error saving user: ${error.message}`);
-        });
-}
-
-async function deleteDecks() {
-    await Deck.deleteMany()
-        .exec()
-        .then(result => {
-            console.log(`Deleted ${result.deletedCount} decks.`);
-        })
-        .catch(error => {
-            console.log(`Error deleting decks: ${error.message}`);
-        });
-}
-
-async function saveDeck(deck, user) {
-    deck.user = user._id;
-    await Deck.create(deck)
-        .then(deck => {
-            console.log(`Saved ${deck.name} for ${user.fullName}`);
-        })
-        .catch(error => {
-            console.log(`Error saving deck: ${error.message}`);
-        });
-}
-
-async function deleteCards() {
-    await Card.deleteMany()
-        .exec()
-        .then(result => {
-            console.log(`${result.deletedCount} cards deleted.`);
-        }).catch(error => {
-            console.log(`Error deleting cards: ${error.message}`);
-        })
-}
-
-async function saveCard(card, user) {
-    card.user = user._id;
-    await Card.create(card)
-        .then(result => {
-            console.log(`Saved ${result.name}`);
-        })
-        .catch(error => {
-            console.log(`Error saving card: ${error.message}`);
-        });
-}
-function addCardToDeck(card, deck) {
-    Card.findOne({'name': card.name}).exec()
-        .then(c => {
-            // console.log(c)
-            deck.cards.push(c._id);
-            Deck.findOneAndUpdate({'name': deck.name}, deck, {new: true})
-                .populate("cards")
-                .exec()
-                .then(result => {
-                    console.log(`Added ${card.name} to ${deck.name}.`);
-                })
-                .catch(error => {
-                    console.log(`Error adding card to deck: ${error.message}`);
-                })
-        });
-}
-
-// Delete all users then save test users
-// deleteUsers()
-//     .then(() => {
-//         testUsers.forEach(user => saveUser(user))
-//     })
-//     .catch(error => console.log(`${error.message}`));
-
-// !Need to delete and add users separately first before running this
-/* Deletes all cards and decks,
-/* then saves first two test decks for user 1 and saves and adds cards,
-/* then saves last three test decks for user 2 and saves and add cards */
-deleteCards().then((result) => {
-    deleteDecks()
-        .then(() => {
-            // Save part of the test decks as user1's decks
-            User.findOne({'name.last': 'User 1'}).exec()
-                .then(user1 => {
-                    testDecks.slice(0, 2).forEach(deck => {
-                        saveDeck(deck, user1).then(result => {
-                            // Save first five cards, then add them to each of user1's decks
-                            for (c of testCards.slice(0, 5)) {
-                                if (deck === testDecks[0]) {
-                                    console.log("SAVING CARD")
-                                    saveCard(c, user1).then(() => {
-                                        addCardToDeck(c, deck);
-                                    }).catch(error => console.log(error));
-                                } else {
-                                    console.log("ADDING CARD")
-                                    addCardToDeck(c, deck);
-                                }
-                            }
-                        }).catch(error => console.log(error));
-                    });
-                }).catch(error => console.log(error));
-            // Save part of the test decks as user2's decks
-            User.findOne({'name.last': 'User 2'}).exec()
-                .then(user2 => {
-                    testDecks.slice(2, testDecks.length).forEach(deck => {
-                        saveDeck(deck, user2).then(() => {
-                            // Save remaining cards, then add them to each of user2's decks
-                            testCards.slice(5, testCards.length).forEach(c => {
-                                if (deck === testDecks[2]) {
-                                    saveCard(c, user2).then(() => {
-                                        addCardToDeck(c, deck);
-                                    }).catch(error => console.log(error));
-                                } else {
-                                    addCardToDeck(c, deck);
-                                }
-                            })
-                        }).catch(error => console.log(error));
-                    });
+Promise.all([
+    User.deleteMany().exec(),
+    Deck.deleteMany().exec(),
+    Card.deleteMany().exec()
+]).then(() => {
+    console.log("Cleared database");
+    for (let i = 0; i < testUsers.length; i++) {
+        let decksStart = i * testDecks.length / testUsers.length;
+        let decksEnd = decksStart + testDecks.length / testUsers.length;
+        let cardsStart = i * testCards.length / testUsers.length;
+        let cardsEnd = cardsStart + testCards.length / testUsers.length;
+        User.create(testUsers[i])
+            .then(user => {
+                let userCards = testCards.slice(cardsStart, cardsEnd);
+                userCards.forEach((card) => {
+                    card.user = user;
                 });
-        });
-});
-
-
-
-
+                Card.insertMany(userCards)
+                    .then((savedCards) => {
+                        console.log(`${savedCards.length} cards inserted`)
+                        let userDecks = testDecks.slice(decksStart, decksEnd);
+                        userDecks.forEach((userDeck) => {
+                            userDeck.user = user;
+                            savedCards.forEach((c) => {
+                                userDeck.cards.push(c);
+                            });
+                            console.log(userDeck)
+                            Deck.create(userDeck)
+                                .then((deck) => {
+                                    console.log(`Saved deck "${deck.name}" for user "${user.name.first} ${user.name.last}" with ${deck.cards.length} cards`)
+                                })
+                                .catch((error) => {
+                                    console.log(`Error creating deck: ${error.message}`);
+                                })
+                        });
+                    })
+                    .catch(error => {
+                        console.log(`Error inserting cards: ${error.message}`);
+                    })
+            })
+    }
+})
