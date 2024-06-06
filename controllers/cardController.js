@@ -79,10 +79,11 @@ exports.createCard = async (req, res) => {
     try {
         const { name, front_text, back_text, tags } = req.body;
         const card = new CardModel({
+            user: res.locals.user,
             name,
             front_text,
             back_text,
-            tags: tags ? tags.split(",") : [],
+            tags: tags? tags.split(",") : [],
         });
         await card.save();
         res.redirect("/cards");
@@ -91,4 +92,12 @@ exports.createCard = async (req, res) => {
         res.redirect("/cards/create");
     }
 };
-
+exports.listCards = async (req, res) => {
+    try {
+        const cards = await CardModel.find({ user: res.locals.user._id });
+        res.render("cards", { cards: cards });
+    } catch (error) {
+        console.error("Error fetching cards:", error);
+        res.redirect("/cards");
+    }
+};
