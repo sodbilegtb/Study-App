@@ -1,6 +1,5 @@
-<body>
 <div class="text-center" style="margin-bottom: 10px">
-    <h2><%= title %></h2>
+    <h2>My decks</h2>
 </div>
 <div class="deck-grid">
     <div class="card deck">
@@ -12,15 +11,10 @@
     </div>
     <% decks.forEach(deck => { %>
         <div class="card deck">
+            <div class="card-header">
+                <h4><%= deck.name %></h4>
+            </div>
             <div class="card-body">
-                <div class="row">
-                    <div class="col-4">
-                        <strong>Name:</strong>
-                    </div>
-                    <div class="col">
-                        <%= deck.name %>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-4">
                         <strong>Description:</strong>
@@ -63,4 +57,3 @@
         </div>
     <% }) %>
 </div>
-</body>
