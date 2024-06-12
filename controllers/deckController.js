@@ -36,7 +36,7 @@ module.exports = {
         })
     },
     detailsView: (req, res) => {
-        res.render("decks/details")
+        res.render("decks/show")
     },
     // Gets all user's cards so that they can be shown as options in the create form view
     getCardOptionsNew: (req, res, next) => {
@@ -50,7 +50,7 @@ module.exports = {
         })
     },
     createView: (req, res) => {
-        res.render("decks/form", {title: "Create new deck"});
+        res.render("decks/new");
     },
     create: (req, res, next) => { // Handles post on create view
         const newDeck = new Deck({
@@ -110,7 +110,7 @@ module.exports = {
             .catch(error => next(error));
     },
     editView: (req, res) => {
-        res.render("decks/form", {title: "Edit deck"});
+        res.render("decks/edit");
     },
     // TODO check that the deck belongs to the user
     edit: async (req, res, next) => { // handles post to edit view
@@ -140,7 +140,7 @@ module.exports = {
             }
         }
         // Apply the changes to the deck and show deck details page
-        Deck.findByIdAndUpdate(req.params.id, update, {returnDocument: "after"})
+        Deck.findByIdAndUpdate(req.params.id, {$set: update}, {returnDocument: "after"})
             .populate("cards")
             .exec()
             .then(result => {
@@ -149,5 +149,23 @@ module.exports = {
                 next();
             })
             .catch(error => next(error));
+    },
+    delete: (req, res, next) => {
+        Deck.findByIdAndDelete(req.params.id).exec()
+            .then(() => {
+                res.locals.redirect = "/decks";
+                next();
+            })
+            .catch((error) => {
+                next(error.message);
+            })
+    },
+    redirectView: (req, res, next) => {
+        let redirectPath = res.locals.redirect;
+        if (redirectPath) {
+            res.redirect(redirectPath);
+        } else {
+            next();
+        }
     }
 }

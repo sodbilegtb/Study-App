@@ -48,6 +48,10 @@ h2, h4, h5 {
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15);
 }
 
+.deck-grid a {
+    width:80px
+}
+
 .create-deck {
     width: 45%;
     border-radius: 5px;
