@@ -3,11 +3,12 @@ const express = require("express"),
     layouts = require("express-ejs-layouts"),
     app = express();
 
-const homeController = require("./controllers/homeController"),
-    deckController = require("./controllers/deckController"),
-    cardController = require("./controllers/cardController"),
-    usersController = require("./controllers/userController"),
-    errorController = require("./controllers/errorController");
+const errorController = require("./controllers/errorController");
+
+const homeRouter = require("./routes/home");
+const usersRouter = require("./routes/users");
+const decksRouter = require("./routes/decks");
+const cardsRouter = require("./routes/cards");
 
 const User = require("./models/user");
 
@@ -30,37 +31,26 @@ app.use(express.static('public'))
 
 // Set the user to test user 1 for now
 app.use((req, res, next) => {
-    User.findOne({'name.last': 'User 1'})
+    let lastName = 'User 1';
+    User.findOne({'name.last': lastName})
         .exec()
         .then((user) => {
+            if (user === null) {
+                console.log(`No user with last name ${lastName} found`);
+                throw new Error("User was not found.");
+            }
             res.locals.user = user;
             next();
         })
         .catch(error => {
-            console.log(error.message);
-            next();
+            next(error);
         });
 });
 
-app.get("/", homeController.showHome);
-app.get("/users", usersController.index, usersController.indexView);
-
-app.get("/decks", deckController.index, deckController.indexView); // shows all decks
-app.get("/decks/create", deckController.getCardOptionsNew, deckController.createView); // shows create form
-app.post("/decks/create", deckController.create, deckController.detailsView);
-app.get("/decks/:id", deckController.details, deckController.detailsView);
-app.get("/decks/:id/edit", deckController.getCardOptionsEdit, deckController.editView);
-app.post("/decks/:id/edit", deckController.edit, deckController.detailsView);
-
-app.get("/card/:id", cardController.showCardDetails);
-app.get("/cards", cardController.listCards);
-
-app.get("/cards/:id/edit", cardController.getCardEditForm);
-app.post("/cards/:id/edit", cardController.postCardEditForm);
-app.post("/cards/:id/delete", cardController.deleteCard);
-
-app.get("/cards/create", cardController.showCardCreateForm);
-app.post("/cards/create", cardController.createCard);
+app.use("/", homeRouter);
+app.use("/users", usersRouter);
+app.use("/decks", decksRouter);
+app.use("/cards", cardsRouter);
 
 app.use(errorController.errorHandler);
 

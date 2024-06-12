@@ -4,6 +4,7 @@ const mongoose = require("mongoose"),
         name: {
             first: {
                 type: String,
+                minLength: 1,
                 trim: true
             },
             last: {

@@ -1,17 +1,28 @@
 <div id="navigation">
     <nav class="navbar nav-tabs justify-content-start" style="padding-bottom:1px">
         <div class="navbar-brand" style="font-size: 25px; margin-left: 20px">Agile Web Project</div>
+
         <div class="nav-item">
             <a class="nav-link" href="/">Home</a>
         </div>
+
         <div class="nav-item">
             <a class="nav-link" href="/decks">My decks</a>
         </div>
+
         <div class="nav-item">
             <a class="nav-link" href="/cards">My notecards</a>
         </div>
+
         <div class="nav-item">
             <a class="nav-link" href="/users">Users</a>
         </div>
+
+        <!-- TODO  -->
+        <% if (typeof user !== 'undefined') { %>
+            <div class="nav-item">
+                <a class="nav-link" href="/users/<%= user._id %>">My account</a>
+            </div>
+        <% } %>
     </nav>
 </div>
