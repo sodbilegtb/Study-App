@@ -1,0 +1,46 @@
+<div class="container user-container">
+
+    <h2 class="text-center" style="padding-bottom: 0">My account</h2>
+    <hr>
+    <table class="table user-table">
+
+        <colgroup>
+            <col/>
+            <col/>
+        </colgroup>
+
+        <tr>
+            <td>First name:</td>
+            <td><%= user.name.first %></td>
+        </tr>
+
+        <tr>
+            <td>Last name:</td>
+            <td><%= user.name.last %></td>
+        </tr>
+
+        <tr>
+            <td>Email:</td>
+            <td><%= user.email %></td>
+        </tr>
+
+        <tr>
+            <td>Password:</td>
+            <td><%= user.password %></td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <a href="<%= user._id %>/edit"
+                   class="btn btn-warning"
+                   style="width: 40%; margin-left: 10%; margin-top: 10px">Edit</a>
+
+                <a href="<%= user._id %>/delete?_method=DELETE"
+                   class="btn btn-danger"
+                   onclick="return confirm('Are you sure you want to delete your account?')"
+                   style="width: 40%; margin-top: 10px">Delete account</a>
+            </td>
+        </tr>
+
+    </table>
+</div>

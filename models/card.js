@@ -10,7 +10,7 @@ const cardSchema = new Schema({
     times_studied: { type: Number, default: 0 },
     times_correct: { type: Number, default: 0 },
     times_incorrect: { type: Number, default: 0 },
-    tags: [{ name: String }],
+    tags: [],
 });
 cardSchema.pre('deleteMany', function() {
     Deck.find({cards: this._id}).exec()

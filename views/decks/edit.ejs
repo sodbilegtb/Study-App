@@ -9,15 +9,15 @@
     </div>
 <% } %>
 <div class="container justify-content-center create-deck">
-    <h2 class="text-center" style="margin-bottom:20px"><%= title %></h2>
-    <form method="post" action="">
+    <h2 class="text-center" style="margin-bottom:20px">Edit deck</h2>
+    <form method="post" action="/decks/<%= deck._id %>/update?_method=PUT">
         <div class="row" style="margin-bottom:10px">
             <div class="col-3">
                 <label for="name">Name:</label>
             </div>
             <div class="col">
                 <input id="name" name="name" type="text" style="width:400px"
-                       value="<%= typeof deck !== 'undefined' ? deck.name : "" %>">
+                       value="<%= deck.name %>">
             </div>
         </div>
         <div class="row" style="margin-bottom:10px">
@@ -26,7 +26,7 @@
             </div>
             <div class="col">
                 <textarea rows="2" id="description" placeholder="Description" name="description"
-                          style="width:400px"><%= typeof deck !== 'undefined' ? deck.description : "" %></textarea>
+                          style="width:400px"><%= deck.description %></textarea>
             </div>
         </div>
         <hr>
@@ -39,10 +39,8 @@
             </div>
             <div class="col">
                 <% let checked = "";
-                if (typeof deck !== "undefined") {
-                    if (deck.notification.enabled) {
-                        checked = "checked"
-                    }
+                if (deck.notification.enabled) {
+                    checked = "checked"
                 }
                 %>
                 <input id="notification_enabled"
@@ -62,11 +60,9 @@
                 <!-- https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd -->
                 <% let date = new Date();
                 let dateString = date.toISOString().split('T')[0];
-                if (typeof deck !== 'undefined') {
                     if (deck.notification.enabled) {
                         date = deck.notification.start_date.toISOString().split('T')[0]
                     }
-                }
                 %>
                 <input id="notification_start"
                        type="date"
@@ -80,7 +76,7 @@
             </div>
             <div class="col">
                 <input type="number" name="notification_days" style="width:60px;" placeholder="3" min="1"
-                       value="<%= typeof deck !== 'undefined' ? deck.notification.days_between : "" %>">
+                       value="<%= deck.notification.days_between %>">
                 <span>days</span>
             </div>
         </div>
@@ -89,8 +85,8 @@
             <h5>Cards</h5>
         </div>
         <div class="row">
-            <!-- Cards currently in the deck - for when this is used to edit a deck and to remove cards -->
-            <% if (typeof deck !== 'undefined' && deck.cards.length > 0) { %>
+            <!-- Cards currently in the deck -->
+            <% if (deck.cards.length > 0) { %>
                 <div class="col" style="width: 50%">
                     <h6><strong>Currently in deck:</strong></h6>
                     <span>Select one or more cards to remove them from the deck.</span>
@@ -101,7 +97,7 @@
                     </select>
                 </div>
             <% } %>
-            <!-- Cards that can be added to the deck (all cards when creating a new deck, all cards minus cards in the deck when editing -->
+            <!-- Cards that can be added to the deck (all cards except cards already in the deck) -->
             <% if(cards.length > 0) { %>
                 <div class="col">
                     <h6><strong>Available cards:</strong></h6>
@@ -123,7 +119,7 @@
             <a href="/decks" class="btn btn-secondary"
                style="text-align: center; width: 160px; height: 40px; margin: 2px">Back</a>
             <button type="submit" class="btn btn-success"
-                    style="width: 160px; height: 40px; margin: 2px 2px 20px 2px"><%= typeof deck === 'undefined' ? 'Create' : 'Save changes' %></button>
+                    style="width: 160px; height: 40px; margin: 2px 2px 20px 2px">Save changes</button>
         </div>
     </form>
 </div>

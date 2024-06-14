@@ -1,7 +1,8 @@
 .body {
     padding-top: 20px;
     background-color: whitesmoke;
-    height: 100vh;
+    min-height: 100vh;
+    padding-bottom: 10vh;
 }
 
 .card-header {
@@ -47,6 +48,10 @@ h2, h4, h5 {
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15);
 }
 
+.deck-grid a {
+    width:80px
+}
+
 .create-deck {
     width: 45%;
     border-radius: 5px;
@@ -55,7 +60,8 @@ h2, h4, h5 {
 }
 
 .nav-item {
-    width: 150px;
+    min-width: 100px;
+    max-width: 150px;
     text-align: center;
 }
 
@@ -88,7 +94,7 @@ h2, h4, h5 {
     text-align: center;
 }
 
-.cards-container {
+.cards-container, .users-container {
     width: 55%;
     margin-top:10px;
     padding: 0;
@@ -98,6 +104,41 @@ h2, h4, h5 {
     background-color: white;
     width: 100%;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Single user create, edit, show pages */
+.user-container {
+    width: 500px;
+    padding: 20px 40px 20px 40px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15);
+}
+
+.user-table input {
+    width: 100%;
+}
+
+.user-table tr, .user-table td {
+    border-style: none;
+}
+
+.user-table button {
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Users overview table */
+.users-table .bi {
+    display: block;
+    width: 20px;
+    height: 20px;
+    color: grey;
+    margin-left: 5px;
+}
+
+.users-table td:last-child:hover i {
+    color: black;
 }
 
 
