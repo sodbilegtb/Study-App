@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Deck = require("../models/deck");
 const Card = require("../models/card");
+const bcrypt = require("bcrypt");
 
 module.exports = {
     index: (req, res, next) => {
@@ -10,16 +11,15 @@ module.exports = {
                 let userDecks = {};
                 let userCards = {};
                 for (const user of result) {
-                    userDecks[user._id] = await Deck.countDocuments({user: user}).exec();
-                    userCards[user._id] = await Card.countDocuments({user: user}).exec()
+                    userDecks[user._id] = await Deck.countDocuments({ user: user }).exec();
+                    userCards[user._id] = await Card.countDocuments({ user: user }).exec()
                 }
                 res.locals.userDecks = userDecks;
                 res.locals.userCards = userCards;
                 next();
             }).catch(error => {
-            next(error);
-        })
-
+                next(error);
+            })
     },
     indexView: (req, res) => {
         res.render("users/index");
@@ -33,21 +33,64 @@ module.exports = {
             email: req.body.email,
             password: req.body.password
         };
-
-        User.find({email: user.email}).exec()
+    
+        User.find({ email: user.email }).exec()
             .then((result) => {
                 if (result.length === 0) {
                     User.create(user).then((user) => {
+                        req.flash("success", `${user.fullName}'s account successfully created.`);
                         res.locals.user = user;
                         res.locals.redirect = `/users/${user._id}`;
                         next();
-                    })
+                    }).catch(err => {
+                        next(err);
+                    });
                 } else {
                     throw new Error("A user account with this email already exists.");
                 }
             }).catch(error => {
+                req.flash("error", error.message);
                 next(error);
         });
+    },
+    
+    loginView: (req, res) => {
+        res.render("users/login");
+    },
+    authenticate: (req, res, next) => {
+        const { email, password } = req.body;
+        console.log(`Attempting to authenticate user with email: ${email}`);
+
+        User.findOne({ email: email }).exec()
+            .then(user => {
+                if (!user) {
+                    console.log("User not found.");
+                    req.flash("error", "User not found.");
+                    return res.redirect("/users/login");
+                }
+
+                user.comparePassword(password, (err, isMatch) => {
+                    if (err) {
+                        console.error(`Error comparing password: ${err.message}`);
+                        return next(err);
+                    }
+                    if (!isMatch) {
+                        console.log("Invalid password.");
+                        req.flash("error", "Invalid password.");
+                        return res.redirect("/users/login");
+                    }
+
+                    console.log("Password matched. Logging in...");
+                    req.session.userId = user._id;
+                    req.flash("success", `${user.fullName}'s logged in successfully!`);
+                    res.locals.redirect = "/";
+                    next();
+                });
+            })
+            .catch(error => {
+                console.error(`Error finding user: ${error.message}`);
+                next(error);
+            });
     },
     createView: (req, res) => {
         res.render("users/new");
@@ -77,7 +120,7 @@ module.exports = {
                 email: req.body.email,
                 password: req.body.password
             };
-        User.findByIdAndUpdate(userId, {$set: userParams})
+        User.findByIdAndUpdate(userId, { $set: userParams })
             .then(user => {
                 res.locals.redirect = `/users/${userId}`;
                 res.locals.user = user;
@@ -103,6 +146,6 @@ module.exports = {
                 next();
             }).catch((error) => {
                 next(error);
-        });
+            });
     }
 }
