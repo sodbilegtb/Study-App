@@ -12,6 +12,15 @@
 
 <body>
 <%- include('navigation')%>
+<div class="flashes">
+    <% if (locals.messages) { %>
+        <% if (locals.messages.success) { %>
+            <div class="flash success"><%= locals.messages.success %></div>
+        <%} else { %>
+            <div class="flash error"><%= locals.messages.error %></div>
+        <%} %>
+    <% } %>
+</div>
 <div class="body">
     <%- body %>
 </div>

@@ -3,7 +3,10 @@ const express = require("express"),
     layouts = require("express-ejs-layouts"),
     session = require("express-session"),
     flash = require("connect-flash"),
+    passport = require("passport"),
+    cookieParser = require("cookie-parser"),
     app = express();
+
 
 const errorController = require("./controllers/errorController");
 
@@ -30,34 +33,26 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 
+app.use(cookieParser("your_secret_key"));
 app.use(session({
     secret: "your_secret_key",
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 60000 }
+    cookie: { maxAge: 600000000 }
 }));
-
 app.use(flash());
 
-app.use((req, res, next) => {
-    if (req.session.userId) {
-        User.findById(req.session.userId).exec()
-            .then((user) => {
-                if (user) {
-                    res.locals.user = user;
-                }
-                next();
-            })
-            .catch(error => {
-                next(error);
-            });
-    } else {
-        next();
-    }
-});
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
+    res.locals.loggedIn = req.isAuthenticated();
+    res.locals.user = req.user;
     res.locals.messages = req.flash();
+    // res.locals.loggedIn ? console.log(`Logged in as ${res.locals.user}`) : console.log("Not logged in");
     next();
 });
 

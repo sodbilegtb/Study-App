@@ -1,0 +1,74 @@
+<body>
+<div class="text-center">
+    <h2><%= title %></h2>
+</div>
+<div class="container" style="width: 40%; background-color: lightgrey">
+    <div class="row">
+        <div class="col-4">
+            Name:
+        </div>
+        <div class="col-4">
+            <%= deck.name %>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            Description:
+        </div>
+        <div class="col-4">
+            <%= deck.description %>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            Number of cards:
+        </div>
+        <div class="col-4">
+            <%= deck.cards ? deck.cards.length : 0 %>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            Date created:
+        </div>
+        <div class="col-4">
+            <%= deck.date_created.toLocaleDateString('de-DE') %>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            Times studied:
+        </div>
+        <div class="col-4">
+            <%= deck.times_studied %>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            Last studied:
+        </div>
+        <div class="col-4">
+            <%= deck.last_studied ? deck.last_studied.toLocaleDateString('de-DE') : '-' %>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <label for="notification">Study notifications:</label>
+        </div>
+        <div class="col-1">
+            <input id="notification" type="checkbox" checked="<%= deck.notifications ? deck.notifications : false %>"
+                   disabled="true"/>
+        </div>
+    </div>
+</div>
+<div class="d-flex justify-content-center" style="margin-top: 10px">
+    <a class="btn btn-outline-primary" style="width: 80px; margin: 2px">Edit</a>
+    <a href="/decks" class="btn btn-outline-secondary" style="width: 80px; margin: 2px">Back</a>
+</div>
+<% if (deck.cards && deck.cards.length > 0) { %>
+    <div class="text-center" style="margin-top:10px">
+        <h3>Cards:</h3>
+        <%- include('cards') %>
+    </div>
+<% } %>
+</body>

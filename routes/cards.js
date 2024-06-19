@@ -7,7 +7,7 @@ router.use(methodOverride("_method", {
     methods: ["POST", "GET"]
 }));
 
-router.get("/", cardController.listCards);
+router.get("/", cardController.listCards, cardController.redirectView);
 router.get("/create", cardController.showCardCreateForm);
 router.post("/create", cardController.createCard);
 router.get("/:id", cardController.showCardDetails);

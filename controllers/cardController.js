@@ -65,20 +65,28 @@ exports.deleteCard = async (req, res, next) => {
     }
 };
 
-exports.listCards = async (req, res) => {
-    CardModel.find({user: res.locals.user._id})
-        .exec()
-        .then(async (cards) => {
-            cardDecks = []
-            for (card of cards) {
-                cardDecks[card._id] = await Deck.find({cards: card, user: res.locals.user._id})
-                    .exec();
-            }
-            res.render("cards/cards", {cards: cards, decks: cardDecks});
-        }).catch(error => {
-        console.error("Error fetching cards:", error);
-        res.redirect("/cards");
-    });
+exports.listCards = async (req, res, next) => {
+    if (!res.locals.user) {
+        req.flash("error", `Please login first`);
+        res.locals.redirect = "/users/login";
+        next();
+    } else {
+        CardModel.find({user: res.locals.user._id})
+            .exec()
+            .then(async (cards) => {
+                cardDecks = []
+                for (card of cards) {
+                    cardDecks[card._id] = await Deck.find({cards: card, user: res.locals.user._id})
+                        .exec();
+                }
+                res.render("cards/cards", {cards: cards, decks: cardDecks});
+            }).catch(error => {
+            console.error("Error fetching cards:", error);
+            res.locals.redirect = "/";
+            req.flash("error", 'Error fetching cards')
+            next();
+        });
+    }
 }
 
     exports.showCardCreateForm = (req, res) => {

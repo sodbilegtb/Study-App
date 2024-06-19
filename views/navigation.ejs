@@ -14,12 +14,11 @@
             <a class="nav-link" href="/cards">My notecards</a>
         </div>
 
-        <div class="nav-item">
-            <a class="nav-link" href="/users">Users</a>
-        </div>
+<!--        <div class="nav-item">-->
+<!--            <a class="nav-link" href="/users">Users</a>-->
+<!--        </div>-->
 
-        <!-- TODO  -->
-        <% if (typeof user !== 'undefined') { %>
+        <% if (locals.user) { %>
             <div class="nav-item">
                 <a class="nav-link" href="/users/<%= user._id %>">My account</a>
             </div>

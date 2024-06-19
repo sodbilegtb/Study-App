@@ -1,0 +1,40 @@
+<body>
+<h4 class="text-center" style="margin-bottom: 20px">New notecard</h4>
+<div class="container" style="width:45%; background-color: white">
+    <form method="post" action="/">
+        <div class="row justify-content-center" style="margin-bottom:10px">
+            <div class="col-md-6">
+                <label for="name" style="font-size: 20px; margin-right:20px">Name:</label>
+                <input type="text" name="name" id="name" placeholder="Card name" style="width:300px">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col card" style="height: 250px">
+                <div class="row card-header">
+                    <label for="front_title" hidden></label>
+                    <input type="text" id="front_title" name="front_title" placeholder="Front side title"
+                           style="text-align:center">
+                </div>
+                <div class="row">
+                    <label for="front_text"></label>
+                    <textarea id="front_text" name="front_text" rows="6" placeholder="Front side text"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col card" style="height: 250px;">
+                <div class="row card-header"><h5>Back side</h5></div>
+                <div class="row">
+                    <label for="back_text"></label>
+                    <textarea id="back_text" name="back_text" rows="6" placeholder="Back side text"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-sm-3">
+                <button type="submit" class="btn btn-success" style="width: 200px">Create</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>

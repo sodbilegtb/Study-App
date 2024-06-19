@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const Deck = require("../models/deck");
 const Card = require("../models/card");
-const bcrypt = require("bcrypt");
+const passport = require("passport");
 
 module.exports = {
     index: (req, res, next) => {
@@ -11,15 +11,15 @@ module.exports = {
                 let userDecks = {};
                 let userCards = {};
                 for (const user of result) {
-                    userDecks[user._id] = await Deck.countDocuments({ user: user }).exec();
-                    userCards[user._id] = await Card.countDocuments({ user: user }).exec()
+                    userDecks[user._id] = await Deck.countDocuments({user: user}).exec();
+                    userCards[user._id] = await Card.countDocuments({user: user}).exec()
                 }
                 res.locals.userDecks = userDecks;
                 res.locals.userCards = userCards;
                 next();
             }).catch(error => {
-                next(error);
-            })
+            next(error);
+        })
     },
     indexView: (req, res) => {
         res.render("users/index");
@@ -30,68 +30,30 @@ module.exports = {
                 first: req.body.firstName,
                 last: req.body.lastName
             },
-            email: req.body.email,
-            password: req.body.password
+            email: req.body.email
         };
-    
-        User.find({ email: user.email }).exec()
-            .then((result) => {
-                if (result.length === 0) {
-                    User.create(user).then((user) => {
-                        req.flash("success", `${user.fullName}'s account successfully created.`);
-                        res.locals.user = user;
-                        res.locals.redirect = `/users/${user._id}`;
-                        next();
-                    }).catch(err => {
-                        next(err);
-                    });
-                } else {
-                    throw new Error("A user account with this email already exists.");
-                }
-            }).catch(error => {
-                req.flash("error", error.message);
-                next(error);
-        });
+
+        User.register(user, req.body.password, (error, user) => {
+            if (user) {
+                req.flash("success", `${user.fullName}'s account created successfully`);
+                res.locals.redirect = "/";
+                next();
+            } else {
+                req.flash("error", `Failed to create user account: ${error.message}`);
+                res.locals.redirect = "/users/new";
+                next();
+            }
+        })
     },
-    
     loginView: (req, res) => {
         res.render("users/login");
     },
-    authenticate: (req, res, next) => {
-        const { email, password } = req.body;
-        console.log(`Attempting to authenticate user with email: ${email}`);
-
-        User.findOne({ email: email }).exec()
-            .then(user => {
-                if (!user) {
-                    console.log("User not found.");
-                    req.flash("error", "User not found.");
-                    return res.redirect("/users/login");
-                }
-
-                user.comparePassword(password, (err, isMatch) => {
-                    if (err) {
-                        console.error(`Error comparing password: ${err.message}`);
-                        return next(err);
-                    }
-                    if (!isMatch) {
-                        console.log("Invalid password.");
-                        req.flash("error", "Invalid password.");
-                        return res.redirect("/users/login");
-                    }
-
-                    console.log("Password matched. Logging in...");
-                    req.session.userId = user._id;
-                    req.flash("success", `${user.fullName}'s logged in successfully!`);
-                    res.locals.redirect = "/";
-                    next();
-                });
-            })
-            .catch(error => {
-                console.error(`Error finding user: ${error.message}`);
-                next(error);
-            });
-    },
+    authenticate: passport.authenticate("local", {
+        failureRedirect: "/users/login",
+        failureFlash: "Failed to login",
+        successRedirect: "/",
+        successFlash: "Logged in"
+    }),
     createView: (req, res) => {
         res.render("users/new");
     },
@@ -106,8 +68,7 @@ module.exports = {
     profileView: (req, res) => {
         User.findById(req.params.id).exec()
             .then(user => {
-                res.locals.user = user;
-                res.render("users/show");
+                res.render("users/show", {profile: user});
             });
     },
     edit: (req, res, next) => {
@@ -117,10 +78,10 @@ module.exports = {
                     first: req.body.firstName,
                     last: req.body.lastName
                 },
-                email: req.body.email,
-                password: req.body.password
+                email: req.body.email
             };
-        User.findByIdAndUpdate(userId, { $set: userParams })
+
+        User.findByIdAndUpdate(userId, {$set: userParams})
             .then(user => {
                 res.locals.redirect = `/users/${userId}`;
                 res.locals.user = user;
@@ -134,6 +95,25 @@ module.exports = {
     editView: (req, res) => {
         res.render("users/edit");
     },
+    editPasswordView: (req, res) => {
+        res.render("users/edit_password")
+    },
+    editPassword: (req, res, next) => {
+        let oldPassword = req.body.oldPassword;
+        let newPassword = req.body.newPassword;
+        let user = res.locals.user;
+        user.changePassword(oldPassword, newPassword)
+            .then(() => {
+                res.locals.redirect = `/users/${user._id}`;
+                req.flash("success", "Password succesfully changed");
+                next();
+            })
+            .catch(error => {
+                res.locals.redirect = `/users/${user._id}/edit/password`;
+                req.flash("error", `Error changing password: ${error.message}`);
+                next();
+            });
+    },
     delete: (req, res, next) => {
         User.findByIdAndDelete(req.params.id)
             .then(() => {
@@ -145,7 +125,7 @@ module.exports = {
                 }
                 next();
             }).catch((error) => {
-                next(error);
-            });
+            next(error);
+        });
     }
 }

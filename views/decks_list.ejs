@@ -1,0 +1,66 @@
+<body>
+<div class="text-center" style="margin-bottom: 10px">
+    <h2><%= title %></h2>
+</div>
+<div class="deck-grid">
+    <div class="card deck">
+        <div class="card-body align-content-center">
+            <div class="row justify-content-center">
+                <a class="btn btn-outline-primary" style="width: 50%">Create new</a>
+            </div>
+        </div>
+    </div>
+    <% decks.forEach(deck => { %>
+        <div class="card deck">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-4">
+                        <strong>Name:</strong>
+                    </div>
+                    <div class="col">
+                        <%= deck.name %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <strong>Description:</strong>
+                    </div>
+                    <div class="col">
+                        <%= deck.description %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <strong>Note cards:</strong>
+                    </div>
+                    <div class="col">
+                        <%= deck.cards ? deck.cards.length : 0 %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <strong>Last studied:</strong>
+                    </div>
+                    <div class="col">
+                        <%= deck.last_studied ? deck.last_studied.toLocaleDateString('de-DE') : '-' %>
+                    </div>
+                </div>
+                <div class="row row-cols-4 justify-content-start" style="margin-top: 10px">
+                    <div class="col">
+                        <a class="btn btn-outline-primary" style="width:80px">Study</a>
+                    </div>
+                    <div class="col">
+                        <a href="<%= '/decks/' + deck.id %>" class="btn btn-outline-secondary" style="width:80px">Details</a>
+                    </div>
+                    <div class="col">
+                        <a class="btn btn-outline-secondary" style="width:80px">Edit</a>
+                    </div>
+                    <div class="col">
+                        <a class="btn btn-outline-danger" style="width:80px">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% }) %>
+</div>
+</body>

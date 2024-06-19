@@ -54,17 +54,9 @@
             </tr>
 
             <tr>
-                <td>
-                    <label for="password">Password:</label>
-                </td>
+                <td></td>
                 <td colspan="2">
-                    <input id="password"
-                           name="password"
-                           type="password"
-                           minlength="6"
-                           value="<%= user.password %>"
-                           placeholder="Password"
-                           required>
+                    <a href="/users/<%= user._id %>/edit/password">Change password</a>
                 </td>
             </tr>
 
