@@ -1,19 +1,24 @@
 const Deck = require("../models/deck");
 const Card = require("../models/card");
-const {FORBIDDEN} = require("http-status-codes");
 
 module.exports = {
     index: (req, res, next) => {
-        const filter = res.locals.user !== undefined ? {'user': res.locals.user} : {};
-        Deck.find(filter)
-            .populate("cards")
-            .exec()
-            .then(result => {
-                res.locals.decks = result;
-                next();
-            }).catch(error => {
+        if (!res.locals.user) {
+            req.flash("error", `Please login first`);
+            res.locals.redirect = "/users/login";
+            next();
+        } else {
+            const filter = {'user': res.locals.user};
+            Deck.find(filter)
+                .populate("cards")
+                .exec()
+                .then(result => {
+                    res.locals.decks = result;
+                    next();
+                }).catch(error => {
                 next(error);
-        })
+            })
+        }
     },
     indexView: (req, res) => {
         res.render("decks/index")
@@ -23,16 +28,20 @@ module.exports = {
             .populate("cards")
             .exec()
             .then(result => {
-                // If user is set, check that the deck belongs to them
-                if (res.locals.user !== undefined && !result.user._id.equals(res.locals.user._id)) {
-                    res.status(FORBIDDEN);
-                    throw new Error("This deck belongs to another user.");
+                if (!res.locals.user) {
+                    req.flash("error", `Please login first`);
+                    res.locals.redirect = "/users/login";
+                    if (!result.user._id.equals(res.locals.user._id)) {
+                        req.flash("error", `Deck belongs to another user`);
+                        res.locals.redirect = "/decks";
+                    }
+                    next();
                 }
                 res.locals.deck = result;
                 res.locals.cards = result.cards;
                 next();
             }).catch(error => {
-                next(error);
+            next(error);
         })
     },
     detailsView: (req, res) => {
@@ -46,13 +55,14 @@ module.exports = {
                 res.locals.cards = result;
                 next();
             }).catch(error => {
-                next(error);
+            next(error);
         })
     },
     createView: (req, res) => {
         res.render("decks/new");
     },
-    create: (req, res, next) => { // Handles post on create view
+    create: (req, res, next) => {
+        // console.log(res.locals.user);
         const newDeck = new Deck({
             user: res.locals.user,
             name: req.body.name,
@@ -73,18 +83,10 @@ module.exports = {
                         next();
                     })
             })
-            .catch(async (error) => {
-                const cards = await Card.find().exec();
-                if (error.name === 'ValidationError') {
-                    console.log(error)
-                    res.render("decks/form", {
-                        title: 'Create new deck',
-                        cards: cards,
-                        errors: [error]
-                    })
-                } else {
-                    next(error);
-                }
+            .catch((error) => {
+                req.flash("error", `Error creating deck: ${error.message}`);
+                res.locals.redirect = "/decks/create";
+                next();
             })
     },
     // Gets the cards in the deck and not in the deck so they can be added or removed

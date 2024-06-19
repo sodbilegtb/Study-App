@@ -1,6 +1,6 @@
 <div class="container user-container">
 
-    <h2 class="text-center" style="padding-bottom: 0">My account</h2>
+    <h2 class="text-center" style="padding-bottom: 0"><%= profile.name.first %>'s account</h2>
     <hr>
     <table class="table user-table">
 
@@ -11,36 +11,32 @@
 
         <tr>
             <td>First name:</td>
-            <td><%= user.name.first %></td>
+            <td><%= profile.name.first %></td>
         </tr>
 
         <tr>
             <td>Last name:</td>
-            <td><%= user.name.last %></td>
+            <td><%= profile.name.last %></td>
         </tr>
 
         <tr>
             <td>Email:</td>
-            <td><%= user.email %></td>
+            <td><%= profile.email %></td>
         </tr>
 
-        <tr>
-            <td>Password:</td>
-            <td><%= user.password %></td>
-        </tr>
+        <% if (locals.user && locals.user._id.equals(profile._id)) { %>
+            <tr>
+                <td colspan="2">
+                    <a href="<%= profile._id %>/edit"
+                       class="btn btn-warning"
+                       style="width: 40%; margin-left: 10%; margin-top: 10px">Edit</a>
 
-        <tr>
-            <td colspan="2">
-                <a href="<%= user._id %>/edit"
-                   class="btn btn-warning"
-                   style="width: 40%; margin-left: 10%; margin-top: 10px">Edit</a>
-
-                <a href="<%= user._id %>/delete?_method=DELETE"
-                   class="btn btn-danger"
-                   onclick="return confirm('Are you sure you want to delete your account?')"
-                   style="width: 40%; margin-top: 10px">Delete account</a>
-            </td>
-        </tr>
-
+                    <a href="<%= profile._id %>/delete?_method=DELETE"
+                       class="btn btn-danger"
+                       onclick="return confirm('Are you sure you want to delete your account?')"
+                       style="width: 40%; margin-top: 10px">Delete account</a>
+                </td>
+            </tr>
+        <% } %>
     </table>
 </div>
