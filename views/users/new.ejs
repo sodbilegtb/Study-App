@@ -1,0 +1,73 @@
+<div class="container user-container">
+
+    <h2 class="text-center">Create new user account</h2>
+
+    <% if (messages.error) { %>
+        <div class="alert alert-danger" role="alert">
+            <%= messages.error %>
+        </div>
+    <% } %>
+
+    <% if (messages.success) { %>
+        <div class="alert alert-success" role="alert">
+            <%= messages.success %>
+        </div>
+    <% } %>
+
+    <form method="post" action="/users/create">
+
+        <table class="table user-table">
+
+            <colgroup>
+                <col style="width: 100px"/>
+                <col style="width: 100px"/>
+                <col style="width: 100px"/>
+            </colgroup>
+
+            <tr>
+                <td colspan="1">
+                    <label for="firstName">First name:</label>
+                </td>
+                <td colspan="2">
+                    <input id="firstName" name="firstName" type="text" placeholder="First name">
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="1">
+                    <label for="lastName">Last name:</label>
+                </td>
+                <td colspan="2">
+                    <input id="lastName" name="lastName" type="text" placeholder="Last name">
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="1">
+                    <label for="email">Email:</label>
+                </td>
+                <td colspan="2">
+                    <input id="email" name="email" type="email" placeholder="Email" required>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="password">Password:</label>
+                </td>
+                <td colspan="2">
+                    <input id="password" name="password" type="password" minlength="6" placeholder="Password" required>
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    <button class="btn btn-primary" type="submit">Create</button>
+                </td>
+                <td></td>
+            </tr>
+
+        </table>
+    </form>
+</div>

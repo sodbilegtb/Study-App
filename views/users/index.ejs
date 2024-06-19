@@ -2,30 +2,51 @@
     <div class="text-center" style="margin-bottom: 10px">
         <h2>Users</h2>
     </div>
-    <table class="table table-bordered">
+    <table class="table table-bordered table-hover users-table">
         <thead class="table-dark">
-            <tr>
-                <th scope="col">First name</th>
-                <th scope="col">Last name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Password</th>
-                <th scope="col">Decks</th>
-                <th scope="col">Cards</th>
-            </tr>
+        <tr>
+            <th scope="col" style="width: 30px"></th>
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Password</th>
+            <th scope="col">Decks</th>
+            <th scope="col">Cards</th>
+            <th scope="col" style="width: 30px"></th>
+        </tr>
         </thead>
         <tbody>
         <% users.forEach(user => { %>
-        <tr>
-            <% let decksCount = userDecks[user._id]%>
-            <% let cardsCount = userCards[user._id]%>
-            <td><%= user.name.first %></td>
-            <td><%= user.name.last %></td>
-            <td><%= user.email %></td>
-            <td><%= user.password %></td>
-            <td><%= decksCount%></td>
-            <td><%= cardsCount%></td>
-        </tr>
+            <tr>
+                <% let decksCount = userDecks[user._id] %>
+                <% let cardsCount = userCards[user._id] %>
+                <td>
+                    <a href="users/<%= user._id %>">
+                        <i class="bi bi-person-circle"></i>
+                    </a>
+                </td>
+                <td><%= user.name.first %></td>
+                <td><%= user.name.last %></td>
+                <td><%= user.email %></td>
+                <td><%= user.password %></td>
+                <td><%= decksCount %></td>
+                <td><%= cardsCount %></td>
+                <td id="delete">
+                    <a href="/users/<%= user._id %>/delete?_method=DELETE&list=TRUE"
+                       style="text-decoration: none; color: black">
+                        <i class="bi bi-trash-fill"></i>
+                    </a>
+                </td>
+            </tr>
         <% }) %>
         </tbody>
     </table>
+    <script> $('#delete a').click(function(event) {
+        event.stopPropagation();
+        return confirm('Are you sure you want to delete this user?');
+    });
+    </script>
+    <div class="container" style="width: 10%">
+        <a href="/users/new" style="width: 100%" class="btn btn-dark">Add</a>
+    </div>
 </div>

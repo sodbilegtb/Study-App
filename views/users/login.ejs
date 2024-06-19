@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <div class="text-center">
+        <% if (messages.error && messages.error.length > 0) { %>
+            <div class="alert alert-danger">
+                <% messages.error.forEach(function(message) { %>
+                    <p><%= message %></p>
+                <% }) %>
+            </div>
+        <% } %>
+        <form action="/users/login" method="POST">
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" name="email" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" name="password" required>
+            </div>
+            <div>
+                <button type="submit">Login</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
