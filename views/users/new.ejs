@@ -1,6 +1,19 @@
 <div class="container user-container">
 
     <h2 class="text-center">Create new user account</h2>
+
+    <% if (messages.error) { %>
+        <div class="alert alert-danger" role="alert">
+            <%= messages.error %>
+        </div>
+    <% } %>
+
+    <% if (messages.success) { %>
+        <div class="alert alert-success" role="alert">
+            <%= messages.success %>
+        </div>
+    <% } %>
+
     <form method="post" action="/users/create">
 
         <table class="table user-table">
