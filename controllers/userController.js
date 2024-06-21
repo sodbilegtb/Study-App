@@ -52,7 +52,8 @@ module.exports = {
         failureRedirect: "/users/login",
         failureFlash: "Failed to login",
         successRedirect: "/",
-        successFlash: "You have successfully logged in!"
+        successFlash: "You have successfully logged in!",
+        keepSessionInfo: true
     }),
     createView: (req, res) => {
         res.render("users/new");

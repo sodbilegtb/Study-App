@@ -9,6 +9,10 @@
     background-color: white;
 }
 
+.card-footer {
+    padding-left: 0px;
+}
+
 .details {
     width: 55%;
     background-color: white;
@@ -49,7 +53,7 @@ h2, h4, h5 {
 }
 
 .deck-grid a {
-    width:80px
+    width:90px
 }
 
 .create-deck {

@@ -3,7 +3,6 @@
 <head>
     <title>Login</title>
 </head>
-<body class="body">
     <div class="container user-container">
         <h2 class="text-center">Login</h2>
         <% if (messages.error && messages.error.length > 0) { %>
@@ -22,23 +21,19 @@
         <% } %>
         <form action="/users/login" method="POST">
             <table class="table user-table">
-                <colgroup>
-                    <col style="width: 100px"/>
-                    <col style="width: 100px"/>
-                </colgroup>
                 <tr>
-                    <td colspan="1">
+                    <td class="col-1">
                         <label for="email">Email:</label>
                     </td>
-                    <td colspan="1">
+                    <td>
                         <input type="email" name="email" id="email" required>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="1">
+                    <td class="col-1">
                         <label for="password">Password:</label>
                     </td>
-                    <td colspan="1">
+                    <td>
                         <input type="password" name="password" id="password" required>
                     </td>
                 </tr>
@@ -50,5 +45,4 @@
             </table>
         </form>
     </div>
-</body>
 </html>
