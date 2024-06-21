@@ -52,7 +52,7 @@ module.exports = {
         failureRedirect: "/users/login",
         failureFlash: "Failed to login",
         successRedirect: "/",
-        successFlash: "Logged in"
+        successFlash: "You have successfully logged in!"
     }),
     createView: (req, res) => {
         res.render("users/new");
@@ -127,5 +127,16 @@ module.exports = {
             }).catch((error) => {
             next(error);
         });
+    },
+    logout: (req, res, next) => {
+        req.logout((err) => {
+            if (err) {
+                return next(err);
+            }
+            req.flash("success", "You have been logged out!");
+            res.locals.redirect = "/";
+            next();
+        });
     }
+    
 }

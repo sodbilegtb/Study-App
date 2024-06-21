@@ -3,8 +3,9 @@
 <head>
     <title>Login</title>
 </head>
-<body>
-    <div class="text-center">
+<body class="body">
+    <div class="container user-container">
+        <h2 class="text-center">Login</h2>
         <% if (messages.error && messages.error.length > 0) { %>
             <div class="alert alert-danger">
                 <% messages.error.forEach(function(message) { %>
@@ -12,18 +13,41 @@
                 <% }) %>
             </div>
         <% } %>
+        <% if (messages.success && messages.success.length > 0) { %>
+            <div class="alert alert-success">
+                <% messages.success.forEach(function(message) { %>
+                    <p><%= message %></p>
+                <% }) %>
+            </div>
+        <% } %>
         <form action="/users/login" method="POST">
-            <div>
-                <label for="email">Email:</label>
-                <input type="email" name="email" required>
-            </div>
-            <div>
-                <label for="password">Password:</label>
-                <input type="password" name="password" required>
-            </div>
-            <div>
-                <button type="submit">Login</button>
-            </div>
+            <table class="table user-table">
+                <colgroup>
+                    <col style="width: 100px"/>
+                    <col style="width: 100px"/>
+                </colgroup>
+                <tr>
+                    <td colspan="1">
+                        <label for="email">Email:</label>
+                    </td>
+                    <td colspan="1">
+                        <input type="email" name="email" id="email" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="1">
+                        <label for="password">Password:</label>
+                    </td>
+                    <td colspan="1">
+                        <input type="password" name="password" id="password" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button class="btn btn-primary" type="submit">Login</button>
+                    </td>
+                </tr>
+            </table>
         </form>
     </div>
 </body>

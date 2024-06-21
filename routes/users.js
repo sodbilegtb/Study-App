@@ -9,6 +9,7 @@ router.use(methodOverride("_method", {
 
 router.get("/login", usersController.loginView);
 router.post("/login", usersController.authenticate, usersController.redirectView);
+router.get("/logout", usersController.logout, usersController.redirectView);
 router.get("/", usersController.index, usersController.indexView);
 router.get("/new", usersController.createView);
 router.post("/create", usersController.create, usersController.redirectView);
