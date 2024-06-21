@@ -1,7 +1,15 @@
 <body>
     <div class="text-center">
-        <% if (locals.user) { %>
-            <h2>Welcome back <%= locals.user.name.first %>!</h2>
+        <% if (messages.success && messages.success.length > 0) { %>
+            <div class="alert alert-success">
+                <% messages.success.forEach(function(message) { %>
+                    <p><%= message %></p>
+                <% }) %>
+            </div>
+        <% } %>
+        <% if (user) { %>
+            <h2>Welcome back <%= user.name.first %>!</h2>
+            <a href="/users/logout">logout</a>
         <% } else { %>
             <h2>Welcome!</h2>
             <a href="/users/login">Login</a><br>
