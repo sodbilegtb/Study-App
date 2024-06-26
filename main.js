@@ -14,6 +14,7 @@ const homeRouter = require("./routes/home");
 const usersRouter = require("./routes/users");
 const decksRouter = require("./routes/decks");
 const cardsRouter = require("./routes/cards");
+const apiRouter = require("./routes/api");
 
 const User = require("./models/user");
 
@@ -49,6 +50,9 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
+    if (!res.locals.data) {
+        res.locals.data = {}
+    }
     res.locals.loggedIn = req.isAuthenticated();
     res.locals.user = req.user;
     res.locals.messages = req.flash();
@@ -60,6 +64,7 @@ app.use("/", homeRouter);
 app.use("/users", usersRouter);
 app.use("/decks", decksRouter);
 app.use("/cards", cardsRouter);
+app.use("/api", apiRouter);
 
 app.use(errorController.errorHandler);
 

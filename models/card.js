@@ -16,8 +16,6 @@ cardSchema.pre('deleteMany', function() {
     Deck.find({cards: this._id}).exec()
         .then((deck) => {
             if (deck.cards) {
-                console.log(deck)
-                console.log(deck.cards)
                 deck.cards = deck.cards.filter(c => !c._id.equals(this._id))
                 deck.save();
             }
