@@ -1,3 +1,4 @@
+
 <div class="text-center" style="margin-bottom: 10px">
     <h2>My decks</h2>
 </div>
@@ -39,10 +40,18 @@
                         <%= deck.last_studied ? deck.last_studied.toLocaleDateString('de-DE') : '-' %>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-4">
+                        <strong>Times studied:</strong>
+                    </div>
+                    <div class="col">
+                        <%= deck.times_studied %>
+                    </div>
+                </div>
             </div>
             <div class="card-footer row row-cols-4" style="margin-top: 10px">
                 <div class="col">
-                    <a class="btn btn-outline-primary">Study</a>
+                    <%- include('_studyModal', {deck: deck}) %>
                 </div>
                 <div class="col">
                     <a href="/decks/<%= deck._id %>" class="btn btn-outline-secondary">Details</a>
