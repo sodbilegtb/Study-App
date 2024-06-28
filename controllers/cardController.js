@@ -1,6 +1,6 @@
 const CardModel = require("../models/card");
 const Deck = require("../models/deck");
-
+const httpStatus = require("http-status");
 exports.showCardDetails = async (req, res) => {
     try {
         const card = await CardModel.findById(req.params.id);
@@ -65,29 +65,48 @@ exports.deleteCard = async (req, res, next) => {
     }
 };
 
-exports.listCards = async (req, res, next) => {
+exports.listCards = (req, res, next) => {
     if (!res.locals.user) {
         req.flash("error", `Please login first`);
         res.locals.redirect = "/users/login";
         next();
     } else {
-        CardModel.find({user: res.locals.user._id})
+        const userFilter = { user: res.locals.user._id };
+
+        CardModel.find(userFilter)
             .exec()
-            .then(async (cards) => {
-                cardDecks = []
-                for (card of cards) {
-                    cardDecks[card._id] = await Deck.find({cards: card, user: res.locals.user._id})
-                        .exec();
-                }
-                res.render("cards/cards", {cards: cards, decks: cardDecks});
-            }).catch(error => {
-            console.error("Error fetching cards:", error);
-            res.locals.redirect = "/";
-            req.flash("error", 'Error fetching cards')
-            next();
-        });
+            .then(cards => {
+                const cardDeckPromises = cards.map(card =>
+                    Deck.find({ cards: card._id, user: res.locals.user._id }).exec()
+                );
+
+                Promise.all(cardDeckPromises)
+                    .then(cardDecksArray => {
+                        const cardDecks = {};
+                        cards.forEach((card, index) => {
+                            cardDecks[card._id] = cardDecksArray[index];
+                        });
+
+                        res.locals.cards = cards;
+                        res.locals.cardDecks = cardDecks;
+                        next();
+                    })
+                    .catch(error => {
+                        console.error("Error fetching decks for cards:", error);
+                        req.flash("error", 'Error fetching decks for cards');
+                        res.locals.redirect = "/";
+                        next(error);
+                    });
+            })
+            .catch(error => {
+                console.error("Error fetching cards:", error);
+                req.flash("error", 'Error fetching cards');
+                res.locals.redirect = "/";
+                next(error);
+            });
     }
-}
+};
+
 
     exports.showCardCreateForm = (req, res) => {
         res.render("cards/card_create_form");
@@ -116,6 +135,41 @@ exports.listCards = async (req, res, next) => {
         if (redirectPath) {
             res.redirect(redirectPath);
         } else {
-            next();
+            res.render("cards/cards", {
+                cards: res.locals.cards,
+                decks: res.locals.cardDecks
+            });
         }
     };
+
+    exports.respondJSON = (req, res) => {
+        res.locals.messages = req.flash();
+        if (!res.locals.loggedIn) {
+            return res.status(401).json({ error: "login first!" });
+        }
+        if ("error" in res.locals.messages) {
+            return res.status(500).json({ error: res.locals.messages["error"] });
+        }
+        const cards = res.locals.cards;
+        const cardDecks = res.locals.cardDecks;
+        res.json({ cards: cards, decks: cardDecks });
+    };
+    
+    exports.errorJSON= (error, req, res, next) => {
+        let errorObject;
+
+        if (error) {
+            errorObject = {
+                status: httpStatus.INTERNAL_SERVER_ERROR,
+                message: error.message
+            }
+        } else {
+            errorObject = {
+                status: httpStatus.INTERNAL_SERVER_ERROR,
+                message: "Unknown error"
+            }
+        }
+        res.json(errorObject);
+    }
+
+    
