@@ -1,5 +1,6 @@
 const Deck = require("../models/deck");
 const Card = require("../models/card");
+const httpStatus = require("http-status-codes");
 
 module.exports = {
     index: (req, res, next) => {
@@ -13,7 +14,7 @@ module.exports = {
                 .populate("cards")
                 .exec()
                 .then(result => {
-                    res.locals.decks = result;
+                    res.locals.data.decks = result;
                     next();
                 }).catch(error => {
                 next(error);
@@ -24,25 +25,26 @@ module.exports = {
         res.render("decks/index")
     },
     details: (req, res, next) => {
-        Deck.findById(req.params.id)
-            .populate("cards")
-            .exec()
-            .then(result => {
-                if (!res.locals.user) {
-                    req.flash("error", `Please login first`);
-                    res.locals.redirect = "/users/login";
+        if (!res.locals.user) {
+            req.flash("error", `Please login first`);
+            res.locals.redirect = "/users/login";
+            next();
+        } else {
+            Deck.findById(req.params.id)
+                .populate("cards")
+                .exec()
+                .then(result => {
                     if (!result.user._id.equals(res.locals.user._id)) {
                         req.flash("error", `Deck belongs to another user`);
                         res.locals.redirect = "/decks";
+                    } else {
+                        res.locals.data.deck = result;
                     }
                     next();
-                }
-                res.locals.deck = result;
-                res.locals.cards = result.cards;
-                next();
-            }).catch(error => {
-            next(error);
-        })
+                }).catch(error => {
+                next(error);
+            })
+        }
     },
     detailsView: (req, res) => {
         res.render("decks/show")
@@ -62,7 +64,6 @@ module.exports = {
         res.render("decks/new");
     },
     create: (req, res, next) => {
-        // console.log(res.locals.user);
         const newDeck = new Deck({
             user: res.locals.user,
             name: req.body.name,
@@ -78,7 +79,7 @@ module.exports = {
             .then(result => {
                 result.populate("cards")
                     .then(result => {
-                        res.locals.deck = result;
+                        res.locals.data.deck = result;
                         res.locals.cards = result.cards;
                         next();
                     })
@@ -146,8 +147,21 @@ module.exports = {
             .populate("cards")
             .exec()
             .then(result => {
-                res.locals.deck = result;
-                res.locals.cards = result.cards;
+                res.locals.data.deck = result;
+                next();
+            })
+            .catch(error => next(error));
+    },
+    updateStudied: async (req, res, next) => {
+        const deckId = req.params.id;
+        let deck = await Deck.findById(deckId);
+        const update = {
+            last_studied: Date.now(),
+            times_studied: deck.times_studied + 1
+        }
+        Deck.findByIdAndUpdate(req.params.id, {$set: update})
+            .then(() => {
+                res.locals.redirect = "/decks";
                 next();
             })
             .catch(error => next(error));
@@ -169,5 +183,34 @@ module.exports = {
         } else {
             next();
         }
+    },
+    respondJSON: (req, res) => {
+        res.locals.messages = req.flash();
+        if (!res.locals.loggedIn) {
+            throw new Error("Please login first");
+        }
+        if ("error" in res.locals.messages) {
+            throw new Error(res.locals.messages["error"])
+        }
+        res.json({
+            status: httpStatus.OK,
+            data: res.locals.data
+        });
+    },
+    errorJSON: (error, req, res, next) => {
+        let errorObject;
+
+        if (error) {
+            errorObject = {
+                status: httpStatus.INTERNAL_SERVER_ERROR,
+                message: error.message
+            }
+        } else {
+            errorObject = {
+                status: httpStatus.INTERNAL_SERVER_ERROR,
+                message: "Unknown error"
+            }
+        }
+        res.json(errorObject);
     }
 }

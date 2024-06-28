@@ -14,13 +14,12 @@
         .card-row {
             display: flex;
             flex-wrap: wrap;
-            height: 300px;
+            min-height: 300px;
             margin: 20px 0;
         }
 
         .card {
             flex: 1;
-            height: 100%;
             border: 1px solid #ddd;
             border-radius: 5px;
             padding: 20px;
@@ -135,9 +134,13 @@
                 <div class="row">
                     <div class="col">Tags:</div>
                     <% if (card.tags.length > 0) { %>
-                        <div class="col">
+                        <div class="container col">
                             <% card.tags.forEach(tag => { %>
-                                <span class="tag"><%= tag %></span>
+                                <div class="row" style="margin: 0">
+                                    <div class="col" style="padding: 0 0 5px 0">
+                                        <span class="tag"><%= tag %></span>
+                                    </div>
+                                </div>
                             <% }) %>
                         </div>
                     <% } %>

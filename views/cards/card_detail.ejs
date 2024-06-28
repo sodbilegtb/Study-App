@@ -17,11 +17,11 @@
             <span><%= card.times_incorrect %></span><br>
             <% if(typeof card.tags !== 'undefined') { %>
                 <% for(let i = 0; i < card.tags.length; i++) { %>
-                    <span><%= card.tags[i].name %><%= (i !== card.tags.length - 1) ? ',' : '' %></span>
+                    <span><%= card.tags[i] %><%= (i !== card.tags.length - 1) ? ',' : '' %></span>
                 <% } %><br>
-                <% for(let i = 0; i < decks.length; i++) { %>
-                    <span><%= decks[i].name %><%= (i !== decks.length - 1) ? ',' : '' %></span>
-                <% } %>
+            <% } %>
+            <% for(let i = 0; i < decks.length; i++) { %>
+                <span><%= decks[i].name %><%= (i !== decks.length - 1) ? ',' : '' %></span>
             <% } %>
         </div>
     </div>
