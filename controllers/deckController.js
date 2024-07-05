@@ -1,6 +1,7 @@
 const Deck = require("../models/deck");
 const Card = require("../models/card");
 const httpStatus = require("http-status-codes");
+const http = require("http");
 
 module.exports = {
     index: (req, res, next) => {
@@ -185,17 +186,12 @@ module.exports = {
         }
     },
     respondJSON: (req, res) => {
-        res.locals.messages = req.flash();
-        if (!res.locals.loggedIn) {
-            throw new Error("Please login first");
+        if(!res.headerSent) {
+            res.json({
+                status: httpStatus.OK,
+                data: res.locals.data
+            })
         }
-        if ("error" in res.locals.messages) {
-            throw new Error(res.locals.messages["error"])
-        }
-        res.json({
-            status: httpStatus.OK,
-            data: res.locals.data
-        });
     },
     errorJSON: (error, req, res, next) => {
         let errorObject;
