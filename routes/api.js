@@ -4,6 +4,7 @@ const cardController = require("../controllers/cardController");
 const usersController = require("../controllers/userController");
 
 router.post("/login", usersController.authenticateApi);
+router.use(usersController.verifyJWT);
 
 router.get("/decks", deckController.index, deckController.respondJSON);
 router.get("/decks/:id", deckController.details, deckController.respondJSON);

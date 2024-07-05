@@ -142,17 +142,16 @@ exports.listCards = (req, res, next) => {
         }
     };
 
-    exports.respondJSON = (req, res) => {
-        res.locals.messages = req.flash();
-        if (!res.locals.loggedIn) {
-            return res.status(401).json({ error: "login first!" });
+    exports.respondJSON= (req, res) => {
+        if(!res.headerSent) {
+            const cards = res.locals.cards;
+            const cardDecks = res.locals.cardDdecks;
+            res.json({
+                status: httpStatus.OK,
+                cards: cards,
+                decks: cardDecks
+            })
         }
-        if ("error" in res.locals.messages) {
-            return res.status(500).json({ error: res.locals.messages["error"] });
-        }
-        const cards = res.locals.cards;
-        const cardDecks = res.locals.cardDecks;
-        res.json({ cards: cards, decks: cardDecks });
     };
     
     exports.errorJSON= (error, req, res, next) => {
