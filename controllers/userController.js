@@ -76,6 +76,42 @@ module.exports = {
           }
         })(req, res, next);
     },
+    verifyJWT: (req, res, next) => {
+        let token = req.headers.token;
+        if (token) {
+        jsonWebToken.verify(
+            token,
+            "secret_encoding_passphrase",
+            (errors, payload) => {
+             if (payload) {
+                User.findById(payload.data).then(user => {
+                  if (user) {
+                    res.locals.user = user;
+                    next();
+                 } else {
+                     res.status(httpStatus.FORBIDDEN).json({
+                        error: true,
+                        message: "No User account found."
+                });
+             }
+        });
+       } else {
+            res.status(httpStatus.UNAUTHORIZED).json({
+                error: true,
+                 message: "Cannot verify API token."
+                 });
+            next();
+         }
+        }
+        );
+       } else {
+         res.status(httpStatus.UNAUTHORIZED).json({
+            error: true,
+            message: "Provide Token"
+        });
+        }
+       },
+
     createView: (req, res) => {
         res.render("users/new");
     },
