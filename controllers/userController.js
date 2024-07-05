@@ -2,6 +2,8 @@ const User = require("../models/user");
 const Deck = require("../models/deck");
 const Card = require("../models/card");
 const passport = require("passport");
+const jsonWebToken = require("jsonwebtoken");
+const httpStatus = require("http-status");
 
 module.exports = {
     index: (req, res, next) => {
@@ -55,6 +57,25 @@ module.exports = {
         successFlash: "You have successfully logged in!",
         keepSessionInfo: true
     }),
+    authenticateApi: (req, res, next) => {
+        passport.authenticate("local", {keepSessionInfo: true}, (errors, user) => {
+          if(user) {
+              let signedToken = jsonWebToken.sign({
+                  data: user._id,
+                  exp: new Date().setDate(new Date().getDate() + 1),
+              }, "secret_encoding_passphrase");
+              res.json({
+                  success: true,
+                  token: signedToken
+              });
+          } else {
+              res.json({
+                  success: false,
+                  message: "Could not authenticate user"
+              })
+          }
+        })(req, res, next);
+    },
     createView: (req, res) => {
         res.render("users/new");
     },

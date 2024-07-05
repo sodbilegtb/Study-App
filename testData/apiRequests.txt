@@ -1,0 +1,5 @@
+// api/login
+curl localhost:3000/api/login -X POST -d email=testuser3@gmail.com -d password=pass123
+
+// api/decks, api/decks/:id, api/cards, api/cards/:id
+curl -H "token: <token>" localhost:3000/api/decks
