@@ -22,7 +22,7 @@ app.set("port", process.env.PORT || 3000);
 app.set("view engine", "ejs");
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.DB_URI || "mongodb+srv://user:mLtTkYpXNIO7HY9m@cluster0.sapl7vk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", { dbName: "agile-web" });
+mongoose.connect(process.env.DB_URI || "mongodb+srv://sodbilegtb:qs4kNI96Vk6JydF1@studycard.5musm.mongodb.net/?retryWrites=true&w=majority&appName=studyCard", { dbName: "studyCard" });
 
 const db = mongoose.connection;
 db.once("open", () => {
